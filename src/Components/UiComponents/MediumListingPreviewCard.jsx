@@ -22,7 +22,7 @@ export default function MediumListingPreviewCard() {
         </div>
         <div className="flex flex-row w-full gap-2">
           <img
-            className="size-40 object-cover object-center border-black border-t-2 border-r-2 rounded-br-lg border-b-2 flex-shrink-0"
+            className="w-40 aspect-[4/5] object-cover object-center border-black border-t-2 border-r-2 rounded-br-lg border-b-2 flex-shrink-0"
             src="https://acrotokyo.itembox.design/product/005/000000000595/000000000595-01-l.jpg?t=20240205132947"
             alt=""
           />

@@ -8,7 +8,7 @@ import { BACKEND_URL } from "./lib/constants";
 
 export default function Profile() {
   const [userProfile, setUserProfile] = useState({});
-  const [listingIdArr, setListingIdArr] = useState([]);
+  const [listings, setListings] = useState([]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -24,11 +24,11 @@ export default function Profile() {
     });
   };
 
-  const getListingsOfUser = async() => {
-    const listingIdArr = await axios.get(
+  const getListingsOfUser = async () => {
+    const listings = await axios.get(
       `${BACKEND_URL}/listings/user/${userProfile.id}`
     );
-    setListingIdArr(listingIdArr.data);
+    setListings(listings.data);
   };
 
   useEffect(() => {
@@ -44,9 +44,9 @@ export default function Profile() {
 
   const navigate = useNavigate();
   return (
-    <>
+    <div>
       <style>{`${userProfile.style}`}</style>
-      <div className="h-screen mx-4 mt-4">
+      <main className="h-full px-4 pt-4">
         <div className="flex flex-row items-center gap-2 mb-4">
           {userProfile.profilePicture ? (
             <img
@@ -73,7 +73,7 @@ export default function Profile() {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="#83C0C1"
-                className="w-6 h-6"
+                className="w-6 h-6 chat-icon"
                 onClick={() => navigate("/chat/1")}
               >
                 <path
@@ -88,14 +88,21 @@ export default function Profile() {
 
         <h2 className="font-bold text-2xl text-center underline">Listings</h2>
 
-        <div className="flex flex-col justify-center items-center">
-          {listingIdArr
+        <ul className="flex flex-col justify-center items-center">
+          {listings
             .slice()
             .reverse()
-            .map((listingId) => (
-              <LargeListingPreviewCard key={listingId} listingId={listingId} />
+            .map((listing) => (
+              <LargeListingPreviewCard
+                key={listing.id}
+                title={listing.title}
+                price={listing.price}
+                id={listing.id}
+                images={listing.listing_images}
+                email={userProfile.email}
+              />
             ))}
-        </div>
+        </ul>
 
         {/* GET ALL LISTINGS, GET ALL REVIEWS TO EACH LISTING AND MAP HERE MAYBE DO PAGINATION?  */}
         <h2 className="font-bold text-xl my-4">Reviews</h2>
@@ -105,7 +112,7 @@ export default function Profile() {
           <ReviewBlock />
         </div>
         <Navbar />
-      </div>
-    </>
+      </main>
+    </div>
   );
 }

@@ -25,7 +25,7 @@ export default function Listing() {
   }, [currentUser]);
 
   useEffect(() => {
-    if (listingData.listing) setLoading(false);
+    if (listingData.listing_images) setLoading(false);
   }, [listingData]);
 
   const getListingData = async () => {
@@ -33,6 +33,8 @@ export default function Listing() {
     console.log(listingData.data);
     setListingData(listingData.data);
   };
+
+  const imgArr = listingData.listing_images?.map((image) => image.url);
 
   // Creates request to find/ create chatroom
   const handleClick = async () => {
@@ -85,12 +87,12 @@ export default function Listing() {
               <hr />
             </header>
             <h2 className="font-bold leading-10 mt-4 text-2xl">
-              {listingData.listing.title}
+              {listingData.title}
             </h2>
             <h3 className="font-bold leading-10 mt-2 mb-4 text-xl">
-              ${listingData.listing.price}
+              ${listingData.price}
             </h3>
-            <Carousel imgArr={listingData.images} />
+            <Carousel imgArr={imgArr} />
             <div className="flex flex-row items-center gap-5 py-4">
               <img
                 src={listingData.seller.profilePicture}
@@ -120,10 +122,12 @@ export default function Listing() {
               </svg>
             </div>
             <h2 className="font-bold text-xl pb-2">Description</h2>
-            <p className="text-sm pb-8">{listingData.listing.description}</p>
-            <button className=" bg-[#6C22A6]/60 text-white outline-none border-none  opacity-80 hover:opacity-100 transition ease-in py-1 px-2 rounded-full mb-4">
-              {listingData.category}
-            </button>
+            <p className="text-sm pb-8">{listingData.description}</p>
+            {listingData.category ? (
+              <button className=" bg-[#6C22A6]/60 text-white outline-none border-none  opacity-80 hover:opacity-100 transition ease-in py-1 px-2 rounded-full mb-4">
+                {listingData.category.name}
+              </button>
+            ) : null}
             <hr />
             <h2 className="font-bold text-xl my-4">Reviews</h2>
             <div className="pt-2 pb-16">
