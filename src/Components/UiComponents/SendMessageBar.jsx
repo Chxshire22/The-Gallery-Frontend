@@ -14,7 +14,6 @@ export default function SendMessageBar() {
   const [newMessage, setNewMessage] = useState("");
   const [userId, setUserId] = useState();
   const [image, setImage] = useState("");
-  const [fileUrl, setFileUrl] = useState("");
   const { chatroomId } = useParams();
   console.log(`chat`, chatroomId);
 
@@ -47,28 +46,30 @@ export default function SendMessageBar() {
       );
       await uploadBytes(storageRefInstance, image);
       const imageSrc = await getDownloadURL(storageRefInstance);
-      setFileUrl(imageSrc);
       console.log(imageSrc);
-    }
 
-    let response = await axios.post(`${BACKEND_URL}/chat/message`, {
-      comment: newMessage,
-      chatroomId: chatroomId,
-      sender: userId,
-    });
+      let response = await axios.post(`${BACKEND_URL}/chat/message`, {
+        comment: newMessage,
+        chatroomId: chatroomId,
+        sender: userId,
+      });
 
-    const messageId = response.data.id;
-    console.log(response.data.id, messageId);
+      const messageId = response.data.id;
+      console.log(response.data.id, messageId);
 
-    if (image !== "") {
       let createImageResponse = await axios.post(`${BACKEND_URL}/chat/image`, {
-        url: fileUrl,
+        url: imageSrc,
         chatroomMessagesId: messageId,
+      });
+    } else {
+      let response = await axios.post(`${BACKEND_URL}/chat/message`, {
+        comment: newMessage,
+        chatroomId: chatroomId,
+        sender: userId,
       });
     }
 
     setNewMessage("");
-    setFileUrl("");
   };
 
   return (

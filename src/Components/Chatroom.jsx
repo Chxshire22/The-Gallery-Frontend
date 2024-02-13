@@ -1,27 +1,30 @@
 import SendMessageBar from "./UiComponents/SendMessageBar";
 import ChatBubble from "./UiComponents/ChatBubble";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCurrentUserContext } from "./lib/context/currentUserContext";
-
 import { BACKEND_URL } from "./lib/constants";
+import axios from "axios";
 
 export default function Chatroom() {
-  const [newMessage, setNewMessage] = useState("");
+  const [allMessages, setAllMessages] = useState([]);
+  const { chatroomId } = useParams();
+  console.log(`chat`, chatroomId);
 
   const { currentUser } = useCurrentUserContext();
 
-  const navigate = useNavigate();
-
-  //Save state to message
-  const handleChange = (event) => {
-    setNewMessage(event.target.value);
+  //Retrieves existing messages for specific chatroom
+  const getAllMessages = async () => {
+    const messagesData = await axios.get(
+      `${BACKEND_URL}/chat/chatroom/${chatroomId}`
+    );
+    setAllMessages(messagesData.data);
+    console.log("allMessages type:", typeof allMessages);
   };
 
-  //When user clicks submit
-  const handleSubmit = async () => {
-    console.log("submit");
-  };
+  useEffect(() => {
+    getAllMessages();
+  }, []);
 
   return (
     <>
@@ -52,6 +55,17 @@ export default function Chatroom() {
         <div className="h-10"></div>
         <hr />
         <ChatBubble />
+        {allMessages &&
+          allMessages.map((item) => (
+            <ChatBubble
+              key={item.id}
+              comment={item.comment}
+              chatImg={
+                item.chat_images.length > 0 ? item.chat_images[0].url : null
+              }
+              senderId={item.sender}
+            />
+          ))}
 
         <SendMessageBar />
       </div>
