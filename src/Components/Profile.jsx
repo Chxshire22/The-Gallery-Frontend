@@ -32,10 +32,8 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    if (paramUsername) {
       getUserByParams();
-    }
-  }, [paramUsername]);
+  }, []);
 
   useEffect(() => {
     if (userProfile) getListingsOfUser();

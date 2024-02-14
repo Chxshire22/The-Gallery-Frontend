@@ -8,6 +8,7 @@ const CurrentUserContext = createContext();
 export function CheckCurrentUser({ children }) {
   const [currentUser, setCurrentUser] = useState({});
   const { user, isAuthenticated } = useAuth0();
+
   const findUser = () => {
     if ((isAuthenticated, user)) {
       axios.get(`${BACKEND_URL}/users/email/${user.email}`).then((res) => {
