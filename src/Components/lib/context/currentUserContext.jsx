@@ -19,7 +19,7 @@ export function CheckCurrentUser({ children }) {
 
   useEffect(() => {
     findUser();
-  }, [isAuthenticated,user]);
+  }, [isAuthenticated, user]);
   return (
     <CurrentUserContext.Provider value={{ currentUser }}>
       {children}

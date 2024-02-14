@@ -5,11 +5,9 @@ import { BACKEND_URL } from "../lib/constants";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
-	const navigate = useNavigate();
-	const [currentUser, setCurrentUser] = useState({})
-	const { loginWithRedirect, user, logout, isAuthenticated } = useAuth0();
-
-
+  const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState({});
+  const { loginWithRedirect, user, logout, isAuthenticated } = useAuth0();
 
   const findUser = () => {
     if ((isAuthenticated, user)) {
@@ -21,13 +19,11 @@ export default function Navbar() {
     }
   };
 
-	useEffect(() =>
-			{
-				findUser()
-			},[isAuthenticated,user,currentUser]);
-	
+  useEffect(() => {
+    findUser();
+  }, [user]);
 
-	return (
+  return (
     <div className="w-full flex justify-center">
       <ul className=" fixed bottom-0 flex justify-around w-full menu menu-horizontal bg-stone-950 rounded-box">
         {/* HOME */}
