@@ -11,6 +11,7 @@ import Listing from "./Components/Listing";
 import Likes from "./Components/Likes";
 import AddListingPreview from "./Components/AddListingPreview";
 import Checkout from "./Components/Checkout";
+import CategoryFilter from "./Components/CategoryFilter";
 import { CheckCurrentUser } from "./Components/lib/context/currentUserContext";
 import { useState } from "react";
 
@@ -64,6 +65,15 @@ export default function App() {
         {
           path: ":listingId",
           element: <Listing />,
+        },
+      ],
+    },
+    {
+      path: "/category/",
+      children: [
+        {
+          path: ":categoryName",
+          element: <CategoryFilter />,
         },
       ],
     },

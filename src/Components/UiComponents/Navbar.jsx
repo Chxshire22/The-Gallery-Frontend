@@ -24,7 +24,7 @@ export default function Navbar() {
 	useEffect(() =>
 			{
 				findUser()
-			},[isAuthenticated,user,currentUser]);
+			},[user]);
 	
 
 	return (

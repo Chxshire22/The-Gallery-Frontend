@@ -3,10 +3,13 @@ import Search from "./UiComponents/SearchBar";
 import axios from "axios";
 import { BACKEND_URL } from "./lib/constants";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Explore() {
   const [categories, setCategories] = useState([]);
   const searchType = "Search";
+
+  const navigate = useNavigate();
 
   const getCategories = async () => {
     const categories = await axios.get(`${BACKEND_URL}/categories`);
@@ -34,6 +37,7 @@ export default function Explore() {
           {categories.map((category) => (
             <button
               key={category.id}
+              onClick={() => navigate(`/category/${category.name}`)}
               className=" bg-[#6C22A6]/60 text-white outline-none border-none opacity-80 hover:opacity-100 transition ease-in py-1 px-2 rounded-full"
             >
               {category.name}
