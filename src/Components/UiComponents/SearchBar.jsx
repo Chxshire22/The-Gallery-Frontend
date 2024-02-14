@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../lib/constants";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ export default function Search(props) {
   const [loading, setLoading] = useState(true);
   const [resultsList, setResultsList] = useState([]);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const debounce = (func, timeout = 300) => {
     let timer;
@@ -26,20 +26,35 @@ export default function Search(props) {
 
   const controller = new AbortController();
   const getSearchSuggest = async () => {
-    const resultsList = await axios.get(
-      `${BACKEND_URL}/listings/search?search=%${searchString}%&page=${page}`,
-      {
-        signal: controller.signal,
-      }
-    );
-    const response = resultsList.data;
-    console.log([...response.listings, ...response.users]);
-    setResultsList([...response.listings, ...response.users]);
+    try {
+      const resultsList = await axios.get(
+        `${BACKEND_URL}/listings/search?search=%${searchString}%&page=${page}`,
+        {
+          signal: controller.signal,
+        }
+      );
+      const response = resultsList.data;
+      console.log(response);
+      console.log([...response.listings, ...response.users]);
+      const listingsUsersList = [...response.listings, ...response.users];
+      setResultsList((prev) => [...new Set([...prev, ...listingsUsersList])]);
+      setHasMore(response.next.exists);
+      setError(false);
+    } catch (error) {
+      setError(true);
+      console.log(error);
+    }
   };
 
   useEffect(() => {
+    setResultsList([]);
+  }, [searchString]);
+
+  useEffect(() => {
     if (searchString !== "") getSearchSuggest();
-    else setResultsList([])
+    else setResultsList([]);
+    setLoading(false);
+
     return () => {
       controller.abort();
     };
@@ -54,6 +69,23 @@ export default function Search(props) {
     console.log(resultsList);
   }, []);
 
+  const observer = useRef();
+  const lastCardElementRef = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          console.log("visible");
+          setPage((prevPage) => prevPage + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+      console.log(node);
+    },
+    [loading, hasMore]
+  );
+
   const debounceHandleSearch = debounce(handleSearch, 300);
 
   return (
@@ -65,6 +97,7 @@ export default function Search(props) {
             type="text"
             placeholder={searchType}
             onChange={debounceHandleSearch}
+            autoFocus
           />
           {/* SUBMIT */}
           <button
@@ -89,25 +122,58 @@ export default function Search(props) {
         </div>
       </form>
       <ul className=" w-full flex flex-col absolute rounded-lg max-h-40 overflow-y-scroll search-drop">
-        {resultsList.map((result, index) => (
-          <li
-            key={index}
-            className="cursor-pointer transition-colors ease-in-out duration-900 z-10 bg-slate-100 p-2 hover:bg-white pl-4 font-medium flex gap-2 items-center"
-            onClick={() => {
-              if (result.title) navigate(`/listing/${result.id}`);
-              else navigate(`/profile/${result.username}`);
-            }}
-          >
-            {result.profilePicture ? (
-              <img
-                className="w-8 h-8 rounded-full"
-                src={result.profilePicture}
-                alt=""
-              />
-            ) : null}
-            <p>{result.title ? result.title : "@" + result.username}</p>
+        {resultsList.map((result, index) => {
+          if (resultsList.length === index + 1) {
+            return (
+              <li
+                ref={lastCardElementRef}
+                key={index}
+                className="cursor-pointer transition-colors ease-in-out duration-900 z-10 bg-slate-100 p-2 hover:bg-white pl-4 font-medium flex gap-2 items-center"
+                onClick={() => {
+                  if (result.title) navigate(`/listing/${result.id}`);
+                  else navigate(`/profile/${result.username}`);
+                }}
+              >
+                {result.profilePicture ? (
+                  <img
+                    className="w-8 h-8 rounded-full"
+                    src={result.profilePicture}
+                    alt=""
+                  />
+                ) : null}
+                <p>{result.title ? result.title : "@" + result.username}</p>
+              </li>
+            );
+          } else {
+            return (
+              <li
+                key={index}
+                className="cursor-pointer transition-colors ease-in-out duration-900 z-10 bg-slate-100 p-2 hover:bg-white pl-4 font-medium flex gap-2 items-center"
+                onClick={() => {
+                  if (result.title) navigate(`/listing/${result.id}`);
+                  else navigate(`/profile/${result.username}`);
+                }}
+              >
+                {result.profilePicture ? (
+                  <img
+                    className="w-8 h-8 rounded-full"
+                    src={result.profilePicture}
+                    alt=""
+                  />
+                ) : null}
+                <p>{result.title ? result.title : "@" + result.username}</p>
+              </li>
+            );
+          }
+        })}
+        {loading && (
+          <li className="cursor-pointer transition-colors ease-in-out duration-900 z-10 bg-slate-100 p-2 hover:bg-white pl-4 font-medium flex gap-2 items-center"></li>
+        )}
+        {error && (
+          <li className="cursor-pointer transition-colors ease-in-out duration-900 z-10 bg-slate-100 p-2 hover:bg-white pl-4 font-medium flex gap-2 items-center">
+            Error
           </li>
-        ))}
+        )}
       </ul>
     </>
   );
