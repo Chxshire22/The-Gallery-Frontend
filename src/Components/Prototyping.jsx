@@ -1,27 +1,21 @@
-export default function Prototyping() {
-  return (
-    <>
-      <style>
-        {`
-        html{
-            background-image: url('https://media.giphy.com/media/kcILLv8U4uR2gSrMIz/giphy.gif') !important;
-        }
 
-        h1 {
-                background-color: red;
-                color: white;
-                font-size: 2em
-            }
-          p{
-            color:red
-          }`}
-      </style>
-      <div className="">
-        <h1 className="fooDiv">Hello world</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, quam!
-        </p>
-      </div>
-    </>
-  );
+import { BACKEND_URL } from "./lib/constants";
+
+export default function Prototyping() {
+  let id = 1;
+
+  const deleteListing = async () => {
+    try {
+      const deleteRequest = await axios.delete(`${BACKEND_URL}/listings/${id}`);
+      return deleteRequest.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // useEffect(() => {
+  //   deleteFiles();
+  // }, []);
+
+  return <></>;
 }

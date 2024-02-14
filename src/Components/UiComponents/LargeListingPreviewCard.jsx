@@ -2,22 +2,23 @@ import { useNavigate } from "react-router-dom";
 import Carousel from "./Carousel";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-
-
+import { deleteListing } from "../lib/utilities";
 
 export default function LargeListingPreviewCard(props) {
 
-const {user, isAuthenticated} = useAuth0()
+  const [deleted, setDeleted] = useState(false)
 
-const { title, price, id, images, email } = props
+  const { user, isAuthenticated } = useAuth0();
 
-const imgArr = images.map(image=> image.url) 
+  const { title, price, id, images, email, } = props;
+
+  const imgArr = images.map((image) => image.url);
 
   const navigate = useNavigate();
 
   return (
     <>
-      <article className=" mt-2 ">
+      <article className={`mt-2 ${deleted? `hidden`: ``}`}>
         <hr />
         <div>
           <div className="flex flex-row items-center">
@@ -60,7 +61,12 @@ const imgArr = images.map(image=> image.url)
                       <li>
                         <a>Reserved</a>
                       </li>
-                      <li>
+                      <li
+                        onClick={() => {
+                          deleteListing(id);
+                          setDeleted(true)
+                        }}
+                      >
                         <a>Delete</a>
                       </li>
                     </>

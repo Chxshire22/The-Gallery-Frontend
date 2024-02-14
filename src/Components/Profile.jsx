@@ -41,7 +41,6 @@ export default function Profile() {
     if (userProfile) getListingsOfUser();
   }, [userProfile]);
 
-
   const navigate = useNavigate();
   return (
     <div>
