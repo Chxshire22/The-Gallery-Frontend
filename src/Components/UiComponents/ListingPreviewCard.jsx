@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-//TODO: MAP PROFILE AND LISTING UIDs FOR ONCLICKS
 export default function ListingPreviewCard(props) {
   const { listingId, title, price, image, seller, profilePicture } = props;
 

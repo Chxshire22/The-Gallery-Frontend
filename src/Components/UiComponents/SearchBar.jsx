@@ -14,6 +14,12 @@ export default function Search(props) {
 
   const navigate = useNavigate();
 
+  /**
+   * Debounces the execution of a function.
+   * @param {Function} func - The function to be debounced.
+   * @param {number} [timeout=300] - The delay in milliseconds before executing the function.
+   * @returns {Function} - The debounced function.
+   */
   const debounce = (func, timeout = 300) => {
     let timer;
     return (...args) => {
@@ -24,6 +30,14 @@ export default function Search(props) {
     };
   };
 
+  /**
+   * Fetches search suggestions from the backend API based on the provided search string and page number.
+   * @param {string} searchString - The search string to query the backend API.
+   * @param {number} page - The page number for pagination.
+   * @param {function} setResultsList - A function to update the state with the fetched list of users and listings.
+   * @param {function} setHasMore - A function to update the state indicating whether more results are available.
+   * @param {function} setError - A function to update the state indicating if an error occurred during the fetch operation. It will render the Error message on the browser
+   */
   const controller = new AbortController();
   const getSearchSuggest = async () => {
     try {
@@ -69,6 +83,12 @@ export default function Search(props) {
     console.log(resultsList);
   }, []);
 
+  /**
+   * Creates a callback function to observe the last element of a list for intersection with the viewport.
+   * @param {boolean} loading - Indicates whether new data is currently being loaded.
+   * @param {boolean} hasMore - Indicates whether there is more data available to load.
+   * @returns {Function} - The callback function to be used as a ref for the last element in the list.
+   */
   const observer = useRef();
   const lastCardElementRef = useCallback(
     (node) => {
