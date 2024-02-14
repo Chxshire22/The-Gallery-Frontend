@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BACKEND_URL } from "./lib/constants";
-import { useAuth0 } from "@auth0/auth0-react";
 import ListingPreviewCard from "./UiComponents/ListingPreviewCard";
 import Navbar from "./UiComponents/Navbar";
 
@@ -15,8 +14,6 @@ function CategoryFilter() {
   const navigate = useNavigate();
 
   const { categoryName } = useParams();
-  const { isAuthenticated } = useAuth0();
-
   const observer = useRef();
   const lastCardElementRef = useCallback(
     (node) => {

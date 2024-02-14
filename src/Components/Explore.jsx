@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Explore() {
   const [categories, setCategories] = useState([]);
+
   const searchType = "Search";
 
   const navigate = useNavigate();
@@ -20,17 +21,19 @@ export default function Explore() {
     getCategories();
   }, []);
 
+
+
   return (
     <>
       <div className="h-screen mx-4 mt-4">
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <Search searchType={searchType} />
+
         </div>
         <hr />
         <h2 className="font-semibold text-lg text-black/80 mt-4 text-center">
           Categories
         </h2>
-
         {/* GET LIST OF CATEGORIES AND MAP THEM HERE */}
 
         <div className="flex flex-row items-center justify-center flex-wrap w-full gap-2 mt-2">

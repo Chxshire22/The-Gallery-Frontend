@@ -14,6 +14,7 @@ import Checkout from "./Components/Checkout";
 import CategoryFilter from "./Components/CategoryFilter";
 import { CheckCurrentUser } from "./Components/lib/context/currentUserContext";
 import { useState } from "react";
+import "./App.css";
 
 export default function App() {
   //raised state for listing creation

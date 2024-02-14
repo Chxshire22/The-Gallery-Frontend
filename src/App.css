@@ -1,0 +1,12 @@
+.search-drop::-webkit-scrollbar {
+  width: 5px;
+}
+.search-drop::-webkit-scrollbar-track {
+  background: white;
+  border-radius: 100vw;
+  margin-block: 0.5rem;
+}
+.search-drop::-webkit-scrollbar-thumb {
+  background: grey;
+  border-radius: 100vw;
+}
