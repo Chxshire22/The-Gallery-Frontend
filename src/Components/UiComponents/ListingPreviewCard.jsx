@@ -14,7 +14,7 @@ export default function ListingPreviewCard(props) {
     if (listingId in currentUserLikes) {
       setLiked(true);
     }
-  }, [ currentUser, currentUserLikes]);
+  }, [currentUser, currentUserLikes]);
 
   const handleLike = async () => {
     try {
@@ -101,7 +101,10 @@ export default function ListingPreviewCard(props) {
           </div>
         </div>
         <div
-          onClick={() => navigate(`/listing/${listingId}`)}
+          onClick={() => {
+            navigate(`/listing/${listingId}`);
+            window.location.reload();
+          }}
           className="cursor-pointer"
         >
           <img
