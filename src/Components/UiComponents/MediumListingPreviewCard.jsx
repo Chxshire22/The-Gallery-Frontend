@@ -54,7 +54,7 @@ export default function MediumListingPreviewCard(props) {
 
   return (
     <>
-      <div className="w-full flex flex-col listing-card-preview box-border border-2 border-black shadow-[4px_4px_0px_0px_#1a202c] rounded-lg">
+      <div className="w-full max-w-[35rem] hover:scale-105 transition-transform ease-in flex flex-col listing-card-preview box-border border-2 border-black shadow-[4px_4px_0px_0px_#1a202c] rounded-lg">
         <div className="h-8 border-b-2 border-black flex flex-row rounded-t-lg items-center">
           <img
             onClick={() => navigate(`/profile/${sellerUsername}`)}

@@ -12,7 +12,7 @@ export default function Likes() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
-  const { currentUser,currentUserLikes } = useCurrentUserContext();
+  const { currentUser, currentUserLikes } = useCurrentUserContext();
 
   const getLikesList = async () => {
     const likes = await axios.get(
@@ -32,12 +32,12 @@ export default function Likes() {
     if (currentUser.id) {
       getLikesList();
     }
-  }, [currentUser,currentUserLikes]);
+  }, [currentUser, currentUserLikes]);
 
   return (
     <>
       <div className="h-screen mx-4 mt-4">
-        <div className="flex flex-row items-center w-full justify-center gap-2 mb-4">
+        <div className="flex flex-row items-center w-full justify-center gap-2 mb-4 lg:mt-24">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -55,7 +55,7 @@ export default function Likes() {
           <h2 className="font-bold">Likes</h2>
         </div>
         <hr />
-        <div className="w-full flex flex-col gap-4 justify-center mt-4">
+        <div className="w-full flex flex-col md:flex-row md:flex-wrap md:justify-start md:gap-8  items-center gap-4 justify-center mt-4">
           {likedListings.map((likedListing, index) => (
             <MediumListingPreviewCard
               key={index}

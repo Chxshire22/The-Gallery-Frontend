@@ -85,8 +85,8 @@ export default function Chats() {
 
   return (
     <>
-      <div className="h-screen mx-4 mt-4">
-        <div className="flex flex-row items-center">
+      <div className="h-screen mx-4 lg:px-40 lg:mx-auto mt-4">
+        <div className="flex flex-row items-center lg:mt-24">
           <img
             className="h-10 w-10 rounded-full object-cover object-center"
             src={currentUser.profilePicture}

@@ -7,22 +7,19 @@ import { useCurrentUserContext } from "../lib/context/currentUserContext";
 import axios from "axios";
 import { BACKEND_URL } from "../lib/constants";
 
-
 export default function LargeListingPreviewCard(props) {
   const { currentUser, currentUserLikes } = useCurrentUserContext();
   const [liked, setLiked] = useState(false);
 
-  const [deleted, setDeleted] = useState(false)
+  const [deleted, setDeleted] = useState(false);
 
   const { user, isAuthenticated } = useAuth0();
 
-  const { title, price, id, images, email, } = props;
+  const { title, price, id, images, email } = props;
 
   const imgArr = images.map((image) => image.url);
 
   const navigate = useNavigate();
-
-
 
   useEffect(() => {
     console.log(currentUserLikes);
@@ -55,7 +52,6 @@ export default function LargeListingPreviewCard(props) {
       console.log(error);
     }
   };
-
 
   return (
     <>

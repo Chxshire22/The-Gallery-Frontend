@@ -25,10 +25,10 @@ export default function Navbar() {
 
   return (
     <div className="w-full flex justify-center">
-      <ul className=" fixed bottom-0 flex justify-around w-full menu menu-horizontal bg-stone-950 rounded-box">
+      <ul className=" fixed bottom-0 lg:top-0 lg:bottom-auto flex justify-around lg:justify-end lg:gap-10 w-full menu menu-horizontal bg-stone-950 rounded-box lg:rounded-t-none">
         {/* HOME */}
         <li
-          className="cursor-pointer"
+          className="cursor-pointer lg:mr-auto"
           onClick={() => {
             navigate("/");
             window.location.reload();
@@ -41,7 +41,7 @@ export default function Navbar() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6 text-white nav-svg"
+              className="w-6 h-6 text-white/60 hover:text-white transition-colors ease-in nav-svg"
             >
               <path
                 strokeLinecap="round"
@@ -63,7 +63,7 @@ export default function Navbar() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6 text-white nav-svg"
+              className="w-6 h-6 text-white/60 hover:text-white transition-colors ease-in nav-svg"
             >
               <path
                 strokeLinecap="round"
@@ -87,7 +87,7 @@ export default function Navbar() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6 text-white nav-svg"
+              className="w-6 h-6 text-white/60 hover:text-white transition-colors ease-in nav-svg"
             >
               <path
                 strokeLinecap="round"
@@ -112,7 +112,7 @@ export default function Navbar() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6 text-white nav-svg"
+              className="w-6 h-6 text-white/60 hover:text-white transition-colors ease-in nav-svg"
             >
               <path
                 strokeLinecap="round"
@@ -125,7 +125,7 @@ export default function Navbar() {
         {/* PROFILE */}
         <li className="cursor-pointer">
           <div>
-            <div className="dropdown dropdown-top dropdown-end">
+            <div className="dropdown dropdown-top dropdown-end lg:dropdown-bottom">
               <div tabIndex={0}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +133,7 @@ export default function Navbar() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6 text-white nav-svg"
+                  className="w-6 h-6 text-white/60 hover:text-white transition-colors ease-in nav-svg"
                 >
                   <path
                     strokeLinecap="round"
