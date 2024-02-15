@@ -1,19 +1,20 @@
 import { useNavigate } from "react-router-dom";
-function ChatroomBlock(props) {
-  const navigate = useNavigate()
 
-  let { chatroomId, userId } = props
+function ChatroomBlock({ chatroomId, potentialBuyerId, userId, listing }) {
+  const navigate = useNavigate();
 
   return (
     <div className=" h-16 w-full flex flex-row items-center mt-2 hover:bg-slate-50 transition ease-in">
       <img
-
-      onClick={()=> navigate(`/profile/${userId}`)}
+        // onClick={() => navigate(`/profile/${userId}`)}
         className="h-12 w-12 rounded-full object-cover object-center flex-initial cursor-pointer"
         src="https://images.unsplash.com/photo-1504257432389-52343af06ae3?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         alt=""
       />
-      <div onClick={()=>navigate(`/chat/${chatroomId}`)} className="flex-1 cursor-pointer h-full">
+      <div
+        onClick={() => navigate(`/chat/${chatroomId}`)}
+        className="flex-1 cursor-pointer h-full"
+      >
         <div className="flex flex-col h-full ">
           <div className="h-[1px] bg-slate-400 opacity-60"></div>
           <div className=" h-1/2 flex flex-row items-center">
@@ -22,6 +23,12 @@ function ChatroomBlock(props) {
             <span className="mx-1 text-xs font-semibold opacity-60">
               |
             </span>{" "}
+            {potentialBuyerId === userId ? (
+              <p className="text-xs font-semibold opacity-60 ml-1">Buyer</p>
+            ) : (
+              <p className="text-xs font-semibold opacity-60 ml-1">Seller</p>
+            )}
+            <span className="mx-1 text-xs font-semibold opacity-60">|</span>{" "}
             <p className="text-xs font-semibold opacity-60 ml-1">10 days ago</p>
           </div>
           <div className=" h-1/2">
@@ -33,7 +40,7 @@ function ChatroomBlock(props) {
       </div>
       {/* Dropdown */}
 
-      <div className="dropdown dropdown-bottom dropdown-end flex-initial">
+      {/* <div className="dropdown dropdown-bottom dropdown-end flex-initial">
         <div tabIndex={0} role="button">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +68,7 @@ function ChatroomBlock(props) {
             <a>Delete</a>
           </li>
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 }

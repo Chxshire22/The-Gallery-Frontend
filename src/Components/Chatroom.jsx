@@ -1,6 +1,6 @@
 import SendMessageBar from "./UiComponents/SendMessageBar";
 import ChatBubble from "./UiComponents/ChatBubble";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCurrentUserContext } from "./lib/context/currentUserContext";
 import { BACKEND_URL } from "./lib/constants";
@@ -22,8 +22,10 @@ export default function Chatroom() {
   console.log(`chat`, chatroomId);
 
   const { currentUser } = useCurrentUserContext();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(currentUser.id);
     setUserId(currentUser.id);
   }, [currentUser]);
 
@@ -121,9 +123,9 @@ export default function Chatroom() {
             </svg>{" "}
             <h2 className="font-bold ml-4 flex-1 text-white">Back</h2>
           </div>{" "}
-          <span className="w-3/4 text-sm font-semibold ml-6 text-slate-500">
+          {/* <span className="w-3/4 text-sm font-semibold ml-6 text-slate-500">
             @jessday
-          </span>
+          </span> */}
         </div>
         <div className="h-10"></div>
         <hr />
@@ -137,6 +139,8 @@ export default function Chatroom() {
                 item.chat_images.length > 0 ? item.chat_images[0].url : null
               }
               senderId={item.sender}
+              profilePic={item.user.profilePicture}
+              timestamp={item.createdAt}
             />
           ))}
 
