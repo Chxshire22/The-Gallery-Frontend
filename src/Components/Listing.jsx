@@ -202,13 +202,24 @@ export default function Listing() {
             <hr />
             <h2 className="font-bold text-xl my-4">Reviews</h2>
             <div className="pt-2 pb-16">
+              {reviews &&
+                reviews.map((review) => (
+                  <ReviewBlock
+                    key={review.id}
+                    comment={review.comment}
+                    rating={review.rating}
+                    name={
+                      review.user.firstName || review.user.lastName
+                        ? `${review.user.firstName} ${review.user.lastName}`
+                        : review.user.username
+                    }
+                    profileImg={review.user.profilePicture}
+                  />
+                ))}
+
               {listingData.buyerId === userId && (
                 <AddReview userId={userId} listingId={listingId} />
               )}
-
-              {/* <ReviewBlock />
-              <ReviewBlock />
-              <ReviewBlock /> */}
             </div>
             <button
               onClick={() => navigate("/checkout")}

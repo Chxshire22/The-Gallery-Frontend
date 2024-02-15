@@ -33,6 +33,7 @@ export default function AddReview({ userId, listingId }) {
   return (
     <>
       <div>
+        <h3 className="font-bold text-xl my-4">Share your experience</h3>
         <div className="rating">
           <input
             type="radio"
@@ -79,7 +80,7 @@ export default function AddReview({ userId, listingId }) {
           placeholder="Add your review"
           name="Review"
           id=""
-          cols="15"
+          cols="10"
           rows="5"
           className="w-full mt-4 p-3 outline-[#83C0C1] rounded active:outline-[#83C0C1] bg-slate-300/30"
           onChange={(e) => {
