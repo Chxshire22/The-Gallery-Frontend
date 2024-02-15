@@ -56,9 +56,7 @@ export default function Chatroom() {
    * 3) POST image to chat_images with the URL and ID
    *
    * */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     if (image !== "") {
       const storageRefInstance = storageRef(
         storage,

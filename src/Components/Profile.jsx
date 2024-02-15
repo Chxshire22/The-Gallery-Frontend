@@ -32,7 +32,7 @@ export default function Profile() {
   };
 
   useEffect(() => {
-      getUserByParams();
+    getUserByParams();
   }, []);
 
   useEffect(() => {
@@ -42,7 +42,8 @@ export default function Profile() {
   const navigate = useNavigate();
   return (
     <div>
-      <style>{`${userProfile.style}`}</style>
+      {/* {userProfile.style && <style>{`${userProfile.style}`}</style>} */}
+
       <main className="h-full px-4 pt-4">
         <div className="flex flex-row items-center gap-2 mb-4">
           {userProfile.profilePicture ? (
