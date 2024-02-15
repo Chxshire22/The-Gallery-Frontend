@@ -30,7 +30,10 @@ export default function Chatroom() {
   }, [currentUser]);
 
   //Set-up for socket.io
-  const socket = io.connect(BACKEND_URL);
+  const socket = io.connect(BACKEND_URL, {
+    rememberTransport: false,
+    transports: ["WebSocket", "Flash Socket", "AJAX long-polling"],
+  });
 
   //Retrieves existing messages for specific chatroom
   const getAllMessages = async () => {
