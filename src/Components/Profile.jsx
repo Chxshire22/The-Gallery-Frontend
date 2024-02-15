@@ -32,11 +32,13 @@ export default function Profile() {
   };
 
   useEffect(() => {
-      getUserByParams();
+    getUserByParams();
   }, []);
 
   useEffect(() => {
-    if (userProfile) getListingsOfUser();
+    if (userProfile.id) {
+      getListingsOfUser();
+    }
   }, [userProfile]);
 
   const navigate = useNavigate();
