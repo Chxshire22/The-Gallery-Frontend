@@ -1,15 +1,23 @@
 import { useNavigate } from "react-router-dom";
 
-function ChatroomBlock({ chatroomId, potentialBuyerId, userId, listing }) {
+function ChatroomBlock({
+  chatroomId,
+  potentialBuyerId,
+  userId,
+  username,
+  profileImg,
+  name,
+  listing,
+}) {
   const navigate = useNavigate();
 
   return (
     <div className=" h-16 w-full flex flex-row items-center mt-2 hover:bg-slate-50 transition ease-in">
       <img
-        // onClick={() => navigate(`/profile/${userId}`)}
+        onClick={() => navigate(`/profile/${username}`)}
         className="h-12 w-12 rounded-full object-cover object-center flex-initial cursor-pointer"
-        src="https://images.unsplash.com/photo-1504257432389-52343af06ae3?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt=""
+        src={profileImg}
+        alt="User profile image"
       />
       <div
         onClick={() => navigate(`/chat/${chatroomId}`)}
@@ -18,23 +26,20 @@ function ChatroomBlock({ chatroomId, potentialBuyerId, userId, listing }) {
         <div className="flex flex-col h-full ">
           <div className="h-[1px] bg-slate-400 opacity-60"></div>
           <div className=" h-1/2 flex flex-row items-center">
-            <h3 className="font-bold ml-6">Donnie</h3>
-            <p className="text-xs font-semibold opacity-60 ml-4">@donnie_yen</p>
-            <span className="mx-1 text-xs font-semibold opacity-60">
-              |
-            </span>{" "}
+            <h3 className="font-bold ml-6">
+              {name !== "null null" ? name : username}
+            </h3>
+            <p className="text-xs font-semibold opacity-60 ml-4">{`@${username}`}</p>
+            <span className="mx-1 text-xs font-semibold opacity-60">|</span>{" "}
             {potentialBuyerId === userId ? (
               <p className="text-xs font-semibold opacity-60 ml-1">Buyer</p>
             ) : (
               <p className="text-xs font-semibold opacity-60 ml-1">Seller</p>
             )}
-            <span className="mx-1 text-xs font-semibold opacity-60">|</span>{" "}
-            <p className="text-xs font-semibold opacity-60 ml-1">10 days ago</p>
+            {/* <p className="text-xs font-semibold opacity-60 ml-1">10 days ago</p> */}
           </div>
           <div className=" h-1/2">
-            <p className="ml-6 text-sm text-slate-500 font-medium">
-              Lorem ipsum dolor sit amet{" "}
-            </p>
+            <p className="ml-6 text-sm text-slate-500 font-medium">{listing}</p>
           </div>
         </div>
       </div>

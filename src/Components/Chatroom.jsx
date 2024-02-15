@@ -30,7 +30,10 @@ export default function Chatroom() {
   }, [currentUser]);
 
   //Set-up for socket.io
-  const socket = io.connect(BACKEND_URL);
+  const socket = io.connect(BACKEND_URL, {
+    rememberTransport: false,
+    transports: ["WebSocket", "Flash Socket", "AJAX long-polling"],
+  });
 
   //Retrieves existing messages for specific chatroom
   const getAllMessages = async () => {
@@ -56,9 +59,7 @@ export default function Chatroom() {
    * 3) POST image to chat_images with the URL and ID
    *
    * */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     if (image !== "") {
       const storageRefInstance = storageRef(
         storage,
