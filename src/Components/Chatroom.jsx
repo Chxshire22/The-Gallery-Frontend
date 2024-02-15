@@ -142,7 +142,7 @@ export default function Chatroom() {
             />
           ))}
 
-        <form className="fixed right-0 left-0 bottom-0 w-full flex justify-center">
+        <form className="fixed right-0 left-0 bottom-0 pb-2 w-full flex justify-center">
           <div className=" rounded-full h-12 flex flex-row bg-slate-200 mt-10 items-center">
             <button type="button" className="ml-3">
               <input
@@ -171,6 +171,7 @@ export default function Chatroom() {
             <input
               className=" ml-4 border-0 h-8 flex-1 outline-none p-4 bg-slate-200 caret-white text-left font-semibold"
               type="text"
+              autoFocus
               placeholder="Send message"
               onChange={(e) => {
                 setNewMessage(e.target.value);

@@ -36,7 +36,9 @@ export default function Profile() {
   }, []);
 
   useEffect(() => {
-    if (userProfile) getListingsOfUser();
+    if (userProfile.id) {
+      getListingsOfUser();
+    }
   }, [userProfile]);
 
   const navigate = useNavigate();

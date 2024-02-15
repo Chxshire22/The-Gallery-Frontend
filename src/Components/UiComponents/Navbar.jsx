@@ -31,6 +31,7 @@ export default function Navbar() {
           className="cursor-pointer"
           onClick={() => {
             navigate("/");
+            window.location.reload();
           }}
         >
           <a>
@@ -101,6 +102,7 @@ export default function Navbar() {
           className={isAuthenticated ? "cursor-pointer" : "hidden"}
           onClick={() => {
             navigate("/likes");
+            window.location.reload();
           }}
         >
           <a>

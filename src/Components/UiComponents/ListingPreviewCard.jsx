@@ -1,8 +1,45 @@
 import { useNavigate } from "react-router-dom";
+import { useCurrentUserContext } from "../lib/context/currentUserContext";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "../lib/constants";
 
 export default function ListingPreviewCard(props) {
   const { listingId, title, price, image, seller, profilePicture } = props;
+  const { currentUser, currentUserLikes } = useCurrentUserContext();
+  const [liked, setLiked] = useState(false);
 
+  useEffect(() => {
+    console.log(currentUserLikes);
+    if (listingId in currentUserLikes) {
+      setLiked(true);
+    }
+  }, [currentUser, currentUserLikes]);
+
+  const handleLike = async () => {
+    try {
+      const like = await axios.post(`${BACKEND_URL}/likes`, {
+        listingId,
+        userId: currentUser.id,
+      });
+      console.log(like.data);
+      setLiked(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUnlike = async () => {
+    try {
+      const unlike = await axios.delete(
+        `${BACKEND_URL}/likes/delete/${listingId}/${currentUser.id}`
+      );
+      console.log(unlike.data);
+      setLiked(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -44,9 +81,16 @@ export default function ListingPreviewCard(props) {
               tabIndex={0}
               className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-28"
             >
-              <li>
-                <a>Like</a>
-              </li>
+              {liked ? (
+                <li onClick={handleUnlike}>
+                  <a>Unlike</a>
+                </li>
+              ) : (
+                <li onClick={handleLike}>
+                  <a>Like</a>
+                </li>
+              )}
+
               <li>
                 <a>Report</a>
               </li>
@@ -57,7 +101,10 @@ export default function ListingPreviewCard(props) {
           </div>
         </div>
         <div
-          onClick={() => navigate(`/listing/${listingId}`)}
+          onClick={() => {
+            navigate(`/listing/${listingId}`);
+            window.location.reload();
+          }}
           className="cursor-pointer"
         >
           <img

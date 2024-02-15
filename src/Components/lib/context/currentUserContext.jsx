@@ -7,6 +7,7 @@ const CurrentUserContext = createContext();
 
 export function CheckCurrentUser({ children }) {
   const [currentUser, setCurrentUser] = useState({});
+  const [currentUserLikes, setCurrentUserLikes] = useState([]);
   const { user, isAuthenticated } = useAuth0();
 
   const findUser = () => {
@@ -14,6 +15,17 @@ export function CheckCurrentUser({ children }) {
       axios.get(`${BACKEND_URL}/users/email/${user.email}`).then((res) => {
         const userData = res.data;
         setCurrentUser(userData);
+        axios.get(`${BACKEND_URL}/likes/list/${res.data.id}`).then((res) => {
+          console.log(res.data);
+          setCurrentUserLikes(
+            res.data
+              .map((each) => each.listing.id)
+              .reduce((acc, currentValue) => {
+                acc[currentValue] = true;
+                return acc;
+              }, {})
+          );
+        });
       });
     }
   };
@@ -22,7 +34,7 @@ export function CheckCurrentUser({ children }) {
     findUser();
   }, [isAuthenticated, user]);
   return (
-    <CurrentUserContext.Provider value={{ currentUser }}>
+    <CurrentUserContext.Provider value={{ currentUser, currentUserLikes }}>
       {children}
     </CurrentUserContext.Provider>
   );

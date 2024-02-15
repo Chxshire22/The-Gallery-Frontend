@@ -1,13 +1,38 @@
+import axios from "axios";
 import MediumListingPreviewCard from "./UiComponents/MediumListingPreviewCard";
 import Navbar from "./UiComponents/Navbar";
-import { useEffect } from "react";
-export default function Likes() {
-  
+import { useEffect, useState } from "react";
+import { BACKEND_URL } from "./lib/constants";
+import { useCurrentUserContext } from "./lib/context/currentUserContext";
 
-// GET REQ FOR ARR OF LISTING, MAP AND PASS PROPS INTO LISTING PREVIEW CARD 
+export default function Likes() {
+  // GET REQ FOR ARR OF LISTING, MAP AND PASS PROPS INTO LISTING PREVIEW CARD
+  const [likedListings, setLikedListings] = useState([]);
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
+
+  const { currentUser,currentUserLikes } = useCurrentUserContext();
+
+  const getLikesList = async () => {
+    const likes = await axios.get(
+      `${BACKEND_URL}/likes/list/${currentUser.id}`
+    );
+    const likesList = likes.data;
+    const likedListingArr = likesList.map(
+      (likedListing) => likedListing.listing
+    );
+    console.log(likedListingArr);
+    setLikedListings(likedListingArr);
+  };
+
+  //just to be clear - using the custom hook useCurrentUserContext() does not query db for user. it just retrieves the state
+  useEffect(() => {
+    console.log(currentUser.id);
+    if (currentUser.id) {
+      getLikesList();
+    }
+  }, [currentUser,currentUserLikes]);
 
   return (
     <>
@@ -31,10 +56,18 @@ export default function Likes() {
         </div>
         <hr />
         <div className="w-full flex flex-col gap-4 justify-center mt-4">
-          <MediumListingPreviewCard />
-          <MediumListingPreviewCard />
-          <MediumListingPreviewCard />
-
+          {likedListings.map((likedListing, index) => (
+            <MediumListingPreviewCard
+              key={index}
+              listingTitle={likedListing.title}
+              listingId={likedListing.id}
+              sellerUsername={likedListing.seller.username}
+              sellerPfp={likedListing.seller.profilePicture}
+              listingPrice={likedListing.price}
+              listingDescription={likedListing.description}
+              listingImage={likedListing.listing_images[0].url}
+            />
+          ))}
         </div>
         <div className=" h-20"></div>
         <Navbar />
