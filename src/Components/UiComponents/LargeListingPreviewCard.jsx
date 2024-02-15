@@ -3,8 +3,14 @@ import Carousel from "./Carousel";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { deleteListing } from "../lib/utilities";
+import { useCurrentUserContext } from "../lib/context/currentUserContext";
+import axios from "axios";
+import { BACKEND_URL } from "../lib/constants";
+
 
 export default function LargeListingPreviewCard(props) {
+  const { currentUser, currentUserLikes } = useCurrentUserContext();
+  const [liked, setLiked] = useState(false);
 
   const [deleted, setDeleted] = useState(false)
 
@@ -16,9 +22,44 @@ export default function LargeListingPreviewCard(props) {
 
   const navigate = useNavigate();
 
+
+
+  useEffect(() => {
+    console.log(currentUserLikes);
+    if (id in currentUserLikes) {
+      setLiked(true);
+    }
+  }, [currentUserLikes]);
+
+  const handleLike = async () => {
+    try {
+      const like = await axios.post(`${BACKEND_URL}/likes`, {
+        listingId: id,
+        userId: currentUser.id,
+      });
+      console.log(like.data);
+      setLiked(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUnlike = async () => {
+    try {
+      const unlike = await axios.delete(
+        `${BACKEND_URL}/likes/delete/${id}/${currentUser.id}`
+      );
+      console.log(unlike.data);
+      setLiked(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   return (
     <>
-      <article className={`mt-2 ${deleted? `hidden`: ``}`}>
+      <article className={`mt-2 ${deleted ? `hidden` : ``}`}>
         <hr />
         <div>
           <div className="flex flex-row items-center">
@@ -64,7 +105,7 @@ export default function LargeListingPreviewCard(props) {
                       <li
                         onClick={() => {
                           deleteListing(id);
-                          setDeleted(true)
+                          setDeleted(true);
                         }}
                       >
                         <a>Delete</a>
@@ -72,9 +113,15 @@ export default function LargeListingPreviewCard(props) {
                     </>
                   ) : (
                     <>
-                      <li>
-                        <a>Like</a>
-                      </li>
+                      {liked ? (
+                        <li onClick={handleUnlike}>
+                          <a>Unlike</a>
+                        </li>
+                      ) : (
+                        <li onClick={handleLike}>
+                          <a>Like</a>
+                        </li>
+                      )}
                       <li>
                         <a>Buy</a>
                       </li>

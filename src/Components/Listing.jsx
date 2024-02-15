@@ -10,9 +10,11 @@ export default function Listing() {
   const [userId, setUserId] = useState();
   const [listingData, setListingData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [likesCount, setLikesCount] = useState(0);
+  const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
   const { listingId } = useParams();
-  const { currentUser } = useCurrentUserContext();
+  const { currentUser, currentUserLikes } = useCurrentUserContext();
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -22,7 +24,10 @@ export default function Listing() {
 
   useEffect(() => {
     setUserId(currentUser.id);
-  }, [currentUser]);
+    if (listingId in currentUserLikes) {
+      setLiked(true);
+    }
+  }, [currentUserLikes]);
 
   useEffect(() => {
     if (listingData.listing_images) setLoading(false);
@@ -30,8 +35,13 @@ export default function Listing() {
 
   const getListingData = async () => {
     const listingData = await axios.get(`${BACKEND_URL}/listings/${listingId}`);
+    const likesCount = await axios.get(
+      `${BACKEND_URL}/likes/count/${listingId}`
+    );
     console.log(listingData.data);
+    console.log(`likes count ${likesCount.data}`);
     setListingData(listingData.data);
+    setLikesCount(likesCount.data);
   };
 
   const imgArr = listingData.listing_images?.map((image) => image.url);
@@ -49,6 +59,33 @@ export default function Listing() {
     console.log(chatroomId);
 
     navigate(`/chat/${chatroomId}`);
+  };
+
+  const handleLike = async () => {
+    try {
+      const like = await axios.post(`${BACKEND_URL}/likes`, {
+        listingId,
+        userId: currentUser.id,
+      });
+      console.log(like.data);
+      setLikesCount((prev) => prev + 1);
+      setLiked(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUnlike = async () => {
+    try {
+      const unlike = await axios.delete(
+        `${BACKEND_URL}/likes/delete/${listingId}/${currentUser.id}`
+      );
+      console.log(unlike.data);
+      setLiked(false);
+      setLikesCount((prev) => prev - 1);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -120,6 +157,36 @@ export default function Listing() {
                   clipRule="evenodd"
                 />
               </svg>
+              <div className="flex flex-row justify-center items-center cursor-pointer m-auto">
+                <p className="text-xs font-bold text-[#F38787]">{likesCount}</p>
+                {liked ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="#F38787"
+                    className="w-8 h-8"
+                    onClick={handleUnlike}
+                  >
+                    <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="#F38787"
+                    className="w-8 h-8"
+                    onClick={handleLike}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                    />
+                  </svg>
+                )}
+              </div>
             </div>
             <h2 className="font-bold text-xl pb-2">Description</h2>
             <p className="text-sm pb-8">{listingData.description}</p>
