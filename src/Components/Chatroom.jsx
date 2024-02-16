@@ -12,14 +12,36 @@ import {
   ref as storageRef,
   getDownloadURL,
 } from "firebase/storage";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Chatroom() {
   const [allMessages, setAllMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [userId, setUserId] = useState();
   const [image, setImage] = useState("");
+  // const [accessToken, setAccessToken] = useState("");
   const { chatroomId } = useParams();
-  console.log(`chat`, chatroomId);
+
+  //Auth redirect if user is not authenticated
+  // const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently } =
+  //   useAuth0();
+
+  // const checkUser = async () => {
+  //   if (isAuthenticated) {
+  //     let token = await getAccessTokenSilently();
+  //     console.log(`token`, token);
+  //     setAccessToken(token);
+  //     setEmail(user.email);
+  //     console.log(`email`, user.email);
+  //   } else {
+  //     loginWithRedirect();
+  //   }
+  // };
+  // useEffect(() => {
+  //   //if user not authenticated, prompt them to authenticate
+  //   console.log("log", isAuthenticated);
+  //   checkUser();
+  // }, []);
 
   const { currentUser } = useCurrentUserContext();
   const navigate = useNavigate();

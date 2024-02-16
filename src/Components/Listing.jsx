@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Carousel from "./UiComponents/Carousel";
+import AddReview from "./AddReview";
 import ReviewBlock from "./UiComponents/ReviewBlock";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -12,6 +13,7 @@ export default function Listing() {
   const [loading, setLoading] = useState(true);
   const [likesCount, setLikesCount] = useState(0);
   const [liked, setLiked] = useState(false);
+  const [reviews, setReviews] = useState();
   const navigate = useNavigate();
   const { listingId } = useParams();
   const { currentUser, currentUserLikes } = useCurrentUserContext();
@@ -38,10 +40,12 @@ export default function Listing() {
     const likesCount = await axios.get(
       `${BACKEND_URL}/likes/count/${listingId}`
     );
+
     console.log(listingData.data);
     console.log(`likes count ${likesCount.data}`);
     setListingData(listingData.data);
     setLikesCount(likesCount.data);
+    setReviews(listingData.data.reviews);
   };
 
   const imgArr = listingData.listing_images?.map((image) => image.url);
@@ -202,9 +206,24 @@ export default function Listing() {
             <hr />
             <h2 className="font-bold text-xl my-4">Reviews</h2>
             <div className="pt-2 pb-16">
-              <ReviewBlock />
-              <ReviewBlock />
-              <ReviewBlock />
+              {reviews &&
+                reviews.map((review) => (
+                  <ReviewBlock
+                    key={review.id}
+                    comment={review.comment}
+                    rating={review.rating}
+                    name={
+                      review.user.firstName || review.user.lastName
+                        ? `${review.user.firstName} ${review.user.lastName}`
+                        : review.user.username
+                    }
+                    profileImg={review.user.profilePicture}
+                  />
+                ))}
+
+              {listingData.buyerId === userId && (
+                <AddReview userId={userId} listingId={listingId} />
+              )}
             </div>
             <button
               onClick={() => navigate("/checkout")}
