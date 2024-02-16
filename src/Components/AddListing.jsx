@@ -92,7 +92,7 @@ export default function AddListing(props) {
 
   return (
     <>
-      <div className="h-screen mx-4 mt-2 ">
+      <div className="h-screen mx-4 mt-2 lg:px-[30rem]">
         <header className="mx-4 mt-2 mb-4">
           <div className="h-10 w-full flex flex-row items-center">
             <div
@@ -120,7 +120,7 @@ export default function AddListing(props) {
         {preview.length !== 0 ? (
           <Carousel imgArr={preview} />
         ) : (
-          <div className="bg-[#83C0C1]/50 flex flex-col justify-center items-center rounded w-full aspect-[4/5] mx-auto">
+          <div className="bg-[#83C0C1]/50 flex flex-col justify-center items-center rounded w-full aspect-[4/5] mx-auto lg:w-[30rem]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -138,29 +138,28 @@ export default function AddListing(props) {
         )}
 
         {/* IMAGE INPUT */}
-
-        <input
-          type="file"
-          multiple
-          accept="image/*"
-          className="file-input w-full max-w-xs mt-4"
-          onChange={handleImageChange}
-          required
-          maxLength={10}
-        />
-
-        {/* DROPDOWN */}
-        <div className="mt-4">
-          <Select
-            value={dropdownSelectValue}
-            onChange={handleChange}
-            options={options}
-            isSearchable={true}
+        <div className="flex flex-col justify-evenly items-start lg:mx-auto lg:w-[40rem]">
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            className="file-input w-full max-w-xs mt-4 lg:w-[40rem] "
+            onChange={handleImageChange}
             required
+            maxLength={10}
           />
-        </div>
-        {/* REST OF FORM FIELDS */}
-        <div className="flex flex-col justify-evenly items-start">
+
+          {/* DROPDOWN */}
+          <div className="mt-4 w-full lg:w-[40rem]">
+            <Select
+              value={dropdownSelectValue}
+              onChange={handleChange}
+              options={options}
+              isSearchable={true}
+              required
+            />
+          </div>
+          {/* REST OF FORM FIELDS */}
           <input
             type="text"
             placeholder="Listing Title"
@@ -214,7 +213,7 @@ export default function AddListing(props) {
         <div className="flex flex-row items-center justify-center mt-4 mb-4">
           <button
             onClick={() => navigate("/preview-listing")}
-            className="btn w-full bg-[#83C0C1] text-white text-lg relative bottom-0 hover:opacity-100 transition ease-in mb-4 "
+            className="btn w-full bg-[#83C0C1] text-white text-lg relative bottom-0 hover:opacity-100 transition ease-in mb-4 lg:w-[40rem]"
             disabled={
               selectedImage.length == 0 ||
               listingTitleValue.length == 0 ||

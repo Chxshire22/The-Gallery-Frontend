@@ -144,7 +144,7 @@ export default function EditProfile() {
 
   return (
     <>
-      <div className="h-screen mx-4 mt-4">
+      <div className="h-screen mx-4 mt-4  lg:w-[40rem] lg:mx-auto">
         {" "}
         <h2 className="text-xl text-center font-bold text-black/50 mb-4">
           Edit Profile

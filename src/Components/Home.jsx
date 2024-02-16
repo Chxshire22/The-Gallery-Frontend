@@ -14,18 +14,21 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   const observer = useRef();
-  const lastCardElementRef = useCallback((node) => {
-    if (loading) return;
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(entries=>{
-      if(entries[0].isIntersecting && hasMore){
-        console.log("visible")
-        setPage(prevPage => prevPage + 1)
-      }
-    })
-    if(node)observer.current.observe(node)
-    console.log(node);
-  },[loading,hasMore]);
+  const lastCardElementRef = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          console.log("visible");
+          setPage((prevPage) => prevPage + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+      console.log(node);
+    },
+    [loading, hasMore]
+  );
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -55,16 +58,15 @@ export default function Home() {
 
   return (
     <>
-      <div className="h-screen relative">
-        <div className=" h-40 w-full overflow-hidden">
-          <img
-            className="object-cover object-center"
-            src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt=""
-          />
-        </div>
+      <div className="h-screen lg:px-20 relative">
+        <img
+          className="object-cover object-center lg:mx-auto aspect-[16/9] 2xl:w-3/4 max-h-[50%] w-full overflow-hidden lg:mt-14 lg:rounded-b-box"
+          src="https://firebasestorage.googleapis.com/v0/b/project3-8f0e6.appspot.com/o/assets%2FWarm%20Tone%20Simple%20Crafts%20Photo%20LinkedIn%20Article%20Cover%20Image.webp?alt=media&token=89409743-5eb0-4f4b-b10b-7f7ab73ad1f2"
+          alt=""
+        />
+
         <h1 className="text-center font-bold antialiased underline">For you</h1>
-        <div className="w-full flex flex-wrap gap-4 justify-center mt-4">
+        <div className="w-full flex flex-wrap gap-4 md:gap-10 justify-center mt-4 ">
           {listings.map((listing, index) => {
             if (listings.length === index + 1) {
               return (

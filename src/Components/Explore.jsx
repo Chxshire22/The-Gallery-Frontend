@@ -26,9 +26,8 @@ export default function Explore() {
   return (
     <>
       <div className="h-screen mx-4 mt-4">
-        <div className="mb-4 relative">
+        <div className="mb-4 relative lg:mt-24">
           <Search searchType={searchType} />
-
         </div>
         <hr />
         <h2 className="font-semibold text-lg text-black/80 mt-4 text-center">
