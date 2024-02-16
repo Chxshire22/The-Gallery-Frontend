@@ -5,7 +5,7 @@ import { useCurrentUserContext } from "../lib/context/currentUserContext";
 export default function ChatBubble({
   comment,
   username,
-  // chatImg,
+  chatImg,
   senderId,
   // profilePic,
   timestamp,
@@ -15,6 +15,8 @@ export default function ChatBubble({
   const content = comment;
 
   const { currentUser } = useCurrentUserContext();
+
+  console.log("image", chatImg);
 
   useEffect(() => {
     setUserId(currentUser.id);
@@ -49,10 +51,16 @@ export default function ChatBubble({
         </div>
         <div className="chat-bubble bg-slate-200">
           {content && content}
-          {/* {chatImg && (
+          {chatImg != "" && (
             <img
               className="min-w-48 max-w-full object-center object-contain rounded"
               src={chatImg}
+            ></img>
+          )}
+          {/* {imageSrc && (
+            <img
+              className="min-w-48 max-w-full object-center object-contain rounded"
+              src={imageSrc}
             ></img>
           )} */}
         </div>

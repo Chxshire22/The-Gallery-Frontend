@@ -66,42 +66,53 @@ export default function Chatroom() {
    * */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    socket.emit("send_message", {
-      id: newMessage.length,
-      comment: newMessage,
-      sender: userId,
-      // chatImg: [],
-    });
-    if (image !== "") {
-      const storageRefInstance = storageRef(
-        storage,
-        DB_STORAGE_CHAT_IMAGE_KEY + userId
-      );
-      await uploadBytes(storageRefInstance, image);
-      const imageSrc = await getDownloadURL(storageRefInstance);
-      console.log(imageSrc);
+    let imageSrc = "";
 
-      let response = await axios.post(`${BACKEND_URL}/chat/message`, {
+    try {
+      // Emit message to socket
+      const emitSocketMessage = async () => {
+        // Check if there's an image
+        if (image !== "") {
+          // Upload image to storage and get image URL
+          const storageRefInstance = storageRef(
+            storage,
+            DB_STORAGE_CHAT_IMAGE_KEY + userId
+          );
+          await uploadBytes(storageRefInstance, image);
+          imageSrc = await getDownloadURL(storageRefInstance);
+          console.log("image", imageSrc);
+        }
+        // Emit message to socket with imageSrc
+        socket.emit("send_message", {
+          id: newMessage.length,
+          comment: newMessage,
+          sender: userId,
+          chat_images: imageSrc, // Include imageSrc if there's an image
+        });
+      };
+
+      await emitSocketMessage();
+
+      // Post message to backend
+      const messageResponse = await axios.post(`${BACKEND_URL}/chat/message`, {
         comment: newMessage,
         chatroomId: chatroomId,
         sender: userId,
       });
 
-      const messageId = response.data.id;
-      console.log(response.data.id, messageId);
-
-      let createImageResponse = await axios.post(`${BACKEND_URL}/chat/image`, {
-        url: imageSrc,
-        chatroomMessagesId: messageId,
-      });
-    } else {
-      let response = await axios.post(`${BACKEND_URL}/chat/message`, {
-        comment: newMessage,
-        chatroomId: chatroomId,
-        sender: userId,
-      });
+      // If there's an image, post image data to backend
+      if (image !== "") {
+        const messageId = messageResponse.data.id;
+        await axios.post(`${BACKEND_URL}/chat/image`, {
+          url: imageSrc, // Use imageSrc from the response
+          chatroomMessagesId: messageId,
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
 
+    // Clear new message state
     setNewMessage("");
   };
 
@@ -109,6 +120,7 @@ export default function Chatroom() {
     socket.on("receive_message", (data) =>
       setAllMessages([...allMessages, data])
     );
+    console.log("new");
   }, [socket, allMessages]);
 
   return (
@@ -146,9 +158,9 @@ export default function Chatroom() {
                 key={item.id}
                 comment={item.comment}
                 username={item.sender == userId ? username : item.user.username}
-                // chatImg={
-                //   item.chat_images.length > 0 ? item.chat_images[0].url : null
-                // }
+                chatImg={
+                  item.chat_images.length > 0 ? item.chat_images[0].url : null
+                }
                 senderId={item.sender}
                 // profilePic={item.user.profilePicture}
                 timestamp={item.createdAt}
