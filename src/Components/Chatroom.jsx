@@ -18,6 +18,8 @@ export default function Chatroom() {
   const [newMessage, setNewMessage] = useState("");
   const [userId, setUserId] = useState();
   const [image, setImage] = useState("");
+  const [username, setUsername] = useState("");
+  const [loaded, setLoaded] = useState(false);
   const { chatroomId } = useParams();
   console.log(`chat`, chatroomId);
 
@@ -25,8 +27,9 @@ export default function Chatroom() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(currentUser.id);
+    console.log(currentUser);
     setUserId(currentUser.id);
+    setUsername(currentUser.username);
   }, [currentUser]);
 
   //Set-up for socket.io
@@ -42,11 +45,16 @@ export default function Chatroom() {
 
   useEffect(() => {
     getAllMessages();
-  }, []);
+  }, [loaded]);
 
   const handleImageChange = (e) => {
     console.log(e.target.files[0]);
     setImage(e.target.files[0]);
+  };
+
+  const convertISOToString = (isoDate = new Date().toISOString()) => {
+    const dateObject = new Date(isoDate);
+    return dateObject.toLocaleString("en-sg"); // You can use other formatting options as needed
   };
 
   /*
@@ -56,12 +64,13 @@ export default function Chatroom() {
    * 3) POST image to chat_images with the URL and ID
    *
    * */
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     socket.emit("send_message", {
-      key: newMessage.length,
+      id: newMessage.length,
       comment: newMessage,
       sender: userId,
-      chatImg: [],
+      // chatImg: [],
     });
     if (image !== "") {
       const storageRefInstance = storageRef(
@@ -136,11 +145,12 @@ export default function Chatroom() {
               <ChatBubble
                 key={item.id}
                 comment={item.comment}
-                chatImg={
-                  item.chat_images.length > 0 ? item.chat_images[0].url : null
-                }
+                username={item.sender == userId ? username : item.user.username}
+                // chatImg={
+                //   item.chat_images.length > 0 ? item.chat_images[0].url : null
+                // }
                 senderId={item.sender}
-                profilePic={item.user.profilePicture}
+                // profilePic={item.user.profilePicture}
                 timestamp={item.createdAt}
               />
             ))}
@@ -177,6 +187,7 @@ export default function Chatroom() {
               type="text"
               autoFocus
               placeholder="Send message"
+              value={newMessage}
               onChange={(e) => {
                 setNewMessage(e.target.value);
               }}
