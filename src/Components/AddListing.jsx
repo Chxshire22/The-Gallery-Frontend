@@ -150,7 +150,7 @@ export default function AddListing(props) {
           />
 
           {/* DROPDOWN */}
-          <div className="mt-4 lg:w-[40rem]">
+          <div className="mt-4 w-full lg:w-[40rem]">
             <Select
               value={dropdownSelectValue}
               onChange={handleChange}
