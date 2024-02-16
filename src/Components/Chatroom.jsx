@@ -87,13 +87,13 @@ export default function Chatroom() {
   const handleSubmit = async () => {
     //pass user information
     socket.emit("send_message", {
-      key: newMessage,
+      key: newMessage.length,
       comment: newMessage,
       sender: userId,
-      chatImg: null,
-      profilePic:
-        "https://firebasestorage.googleapis.com/v0/b/project3-8f0e6.appspot.com/o/profile-img%2FIFFY?alt=media&token=45be3d67-b24e-4c22-8600-48d9139487db",
-      timestamp: 1,
+      // chatImg: null,
+      // profilePic:
+      //   "https://firebasestorage.googleapis.com/v0/b/project3-8f0e6.appspot.com/o/profile-img%2FIFFY?alt=media&token=45be3d67-b24e-4c22-8600-48d9139487db",
+      // timestamp: 1,
     });
 
     if (image !== "") {
@@ -133,7 +133,7 @@ export default function Chatroom() {
     socket.on("receive_message", (data) =>
       setAllMessages([...allMessages, data])
     );
-  }, [socket, messages]);
+  }, [socket, allMessages]);
 
   //Conditionally render chat bubbles based on if user is sender or not
   // const renderChats = (items) => {
