@@ -99,16 +99,6 @@ export default function Chats() {
         {}
         {chatrooms && renderChatroom(chatrooms)}
 
-        {/* chatrooms.map((item) => (
-            <ChatroomBlock
-              key={item.id}
-              chatroomId={item.id}
-              potentialBuyerId={item.potentialBuyerId}
-              userId={userId}
-              listing={item.listing}
-              user={item.user}
-            />
-          ))} */}
         <Navbar />
       </div>
     </>
