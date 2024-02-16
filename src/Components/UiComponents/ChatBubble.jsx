@@ -25,11 +25,9 @@ export default function ChatBubble({
     return dateObject.toLocaleString("en-sg"); // You can use other formatting options as needed
   };
 
-  return (
-    <div className="mt-2">
-      <div
-        className={"chat" + (senderId == userId ? " chat-end" : " chat-start")}
-      >
+  const userChatBubble = () => {
+    return (
+      <div className="chat chat-end">
         <div className="chat-image avatar cursor-pointer">
           <div className="w-10 rounded-full">
             <img alt="Tailwind CSS chat bubble component" src={profilePic} />
@@ -50,6 +48,37 @@ export default function ChatBubble({
           )}
         </div>
       </div>
+    );
+  };
+  const otherChatBubble = () => {
+    return (
+      <div className="chat chat-start">
+        <div className="chat-image avatar cursor-pointer">
+          <div className="w-10 rounded-full">
+            <img alt="Tailwind CSS chat bubble component" src={profilePic} />
+          </div>
+        </div>
+        <div className="chat-header">
+          <time className="text-xs opacity-50">
+            {convertISOToString(timestamp)}
+          </time>
+        </div>
+        <div className="chat-bubble bg-slate-200">
+          {content && content}
+          {chatImg && (
+            <img
+              className="min-w-48 max-w-full object-center object-contain rounded"
+              src={chatImg}
+            ></img>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="mt-2">
+      {userId == senderId? (<userChatBubble/>) : (<otherChatBubble/>)}
     </div>
   );
 }

@@ -25,7 +25,7 @@ export default function Navbar() {
 
   return (
     <div className="w-full flex justify-center">
-      <ul className=" fixed bottom-0 lg:top-0 lg:bottom-auto flex justify-around lg:justify-end lg:gap-10 w-full menu menu-horizontal bg-stone-950 rounded-box lg:rounded-t-none">
+      <ul className=" fixed bottom-0 lg:top-0 lg:bottom-auto flex justify-around lg:justify-end lg:gap-10 w-full menu menu-horizontal bg-stone-950 rounded-t-box lg:rounded-t-none">
         {/* HOME */}
         <li
           className="cursor-pointer lg:mr-auto"
