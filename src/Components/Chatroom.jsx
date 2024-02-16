@@ -136,29 +136,29 @@ export default function Chatroom() {
   }, [socket, messages]);
 
   //Conditionally render chat bubbles based on if user is sender or not
-  const renderChats = (items) => {
-    return items.map((item) =>
-      item.sender == userId ? (
-        <UserChatBubble
-          key={item.id}
-          comment={item.comment}
-          // chatImg={item.chat_images.length > 0 ? item.chat_images[0].url : null}
-          // senderId={item.sender}
-          // profilePic={item.user.profilePicture}
-          // timestamp={item.createdAt}
-        />
-      ) : (
-        <OtherChatBubble
-          key={item.id}
-          comment={item.comment}
-          // chatImg={item.chat_images.length > 0 ? item.chat_images[0].url : null}
-          // senderId={item.sender}
-          // profilePic={item.user.profilePicture}
-          // timestamp={item.createdAt}
-        />
-      )
-    );
-  };
+  // const renderChats = (items) => {
+  //   return items.map((item) =>
+  //     item.sender == userId ? (
+  //       <UserChatBubble
+  //         key={item.id}
+  //         comment={item.comment}
+  //         // chatImg={item.chat_images.length > 0 ? item.chat_images[0].url : null}
+  //         // senderId={item.sender}
+  //         // profilePic={item.user.profilePicture}
+  //         // timestamp={item.createdAt}
+  //       />
+  //     ) : (
+  //       <OtherChatBubble
+  //         key={item.id}
+  //         comment={item.comment}
+  //         // chatImg={item.chat_images.length > 0 ? item.chat_images[0].url : null}
+  //         // senderId={item.sender}
+  //         // profilePic={item.user.profilePicture}
+  //         // timestamp={item.createdAt}
+  //       />
+  //     )
+  //   );
+  // };
 
   return (
     <>
@@ -189,20 +189,20 @@ export default function Chatroom() {
         <div className="h-10"></div>
         <hr />
 
-        {allMessages && renderChats(allMessages)}
+        {/* {allMessages && renderChats(allMessages)} */}
 
-        {/* // allMessages.map((item) => (
-          //   <ChatBubble
-          //     key={item.id}
-          //     comment={item.comment}
-          //     chatImg={
-          //       item.chat_images.length > 0 ? item.chat_images[0].url : null
-          //     }
-          //     senderId={item.sender}
-          //     profilePic={item.user.profilePicture}
-          //     timestamp={item.createdAt}
-          //   />
-          // ))} */}
+        {allMessages.map((item) => (
+          <ChatBubble
+            key={item.id}
+            comment={item.comment}
+            senderId={item.sender}
+            // chatImg={
+            //   item.chat_images.length > 0 ? item.chat_images[0].url : null
+            // }
+            // profilePic={item.user.profilePicture}
+            // timestamp={item.createdAt}
+          />
+        ))}
 
         <form className="fixed right-0 left-0 bottom-0 pb-2 w-full flex justify-center">
           <div className=" rounded-full h-12 flex flex-row bg-slate-200 mt-10 items-center">
