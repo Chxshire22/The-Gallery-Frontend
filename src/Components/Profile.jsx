@@ -46,13 +46,13 @@ export default function Profile() {
     <div>
       {userProfile.style && <style>{`${userProfile.style}`}</style>}
 
-      <main className="h-full px-4 pt-4">
-        <div className="flex flex-row items-center gap-2 mb-4">
+      <main className="h-full px-4 lg:px-[30rem] pt-4">
+        <div className="flex flex-row items-center gap-2  lg:h-[10rem] lg:mt-24 mb-4">
           {userProfile.profilePicture ? (
             <img
               src={userProfile.profilePicture}
               alt=""
-              className="h-28 w-28 rounded-full object-cover object-center flex-shrink-0"
+              className="h-28 w-28 lg:w-45 lg:h-45 rounded-full object-cover object-center flex-shrink-0"
             />
           ) : (
             <div className="h-28 w-28 rounded-full bg-slate-300/50 flex-shrink-0 flex justify-center items-center">
@@ -88,7 +88,7 @@ export default function Profile() {
 
         <h2 className="font-bold text-2xl text-center underline">Listings</h2>
 
-        <ul className="flex flex-col justify-center items-center">
+        <ul className="flex flex-col  lg:gap-8 lg:flex-row lg:flex-wrap justify-center items-center">
           {listings
             .slice()
             .reverse()
