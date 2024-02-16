@@ -106,11 +106,7 @@ export default function Profile() {
 
         {/* GET ALL LISTINGS, GET ALL REVIEWS TO EACH LISTING AND MAP HERE MAYBE DO PAGINATION?  */}
         <h2 className="font-bold text-xl my-4">Reviews</h2>
-        <div className="pt-2 pb-16">
-          <ReviewBlock />
-          <ReviewBlock />
-          <ReviewBlock />
-        </div>
+        <div className="pt-2 pb-16"></div>
         <Navbar />
       </main>
     </div>

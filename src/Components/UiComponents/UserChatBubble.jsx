@@ -25,12 +25,9 @@ export default function ChatBubble({
     return dateObject.toLocaleString("en-sg"); // You can use other formatting options as needed
   };
 
-  //MAke new compo
   return (
     <div className="mt-2">
-      <div
-        className={"chat" + (senderId == userId ? " chat-end" : " chat-start")}
-      >
+      <div className={"chat chat-end"}>
         <div className="chat-image avatar cursor-pointer">
           <div className="w-10 rounded-full">
             <img alt="Tailwind CSS chat bubble component" src={profilePic} />
