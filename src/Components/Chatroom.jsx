@@ -1,7 +1,5 @@
 import SendMessageBar from "./UiComponents/SendMessageBar";
 import ChatBubble from "./UiComponents/ChatBubble";
-import OtherChatBubble from "./UiComponents/OtherChatBubble";
-import UserChatBubble from "./UiComponents/UserChatBubble";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCurrentUserContext } from "./lib/context/currentUserContext";
@@ -14,36 +12,14 @@ import {
   ref as storageRef,
   getDownloadURL,
 } from "firebase/storage";
-import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Chatroom() {
   const [allMessages, setAllMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [userId, setUserId] = useState();
   const [image, setImage] = useState("");
-  // const [accessToken, setAccessToken] = useState("");
   const { chatroomId } = useParams();
-
-  //Auth redirect if user is not authenticated
-  // const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently } =
-  //   useAuth0();
-
-  // const checkUser = async () => {
-  //   if (isAuthenticated) {
-  //     let token = await getAccessTokenSilently();
-  //     console.log(`token`, token);
-  //     setAccessToken(token);
-  //     setEmail(user.email);
-  //     console.log(`email`, user.email);
-  //   } else {
-  //     loginWithRedirect();
-  //   }
-  // };
-  // useEffect(() => {
-  //   //if user not authenticated, prompt them to authenticate
-  //   console.log("log", isAuthenticated);
-  //   checkUser();
-  // }, []);
+  console.log(`chat`, chatroomId);
 
   const { currentUser } = useCurrentUserContext();
   const navigate = useNavigate();
@@ -57,7 +33,6 @@ export default function Chatroom() {
   const socket = io.connect(BACKEND_URL);
 
   //Retrieves existing messages for specific chatroom
-  //store user data and set in state
   const getAllMessages = async () => {
     const messagesData = await axios.get(
       `${BACKEND_URL}/chat/chatroom/${chatroomId}`
@@ -74,9 +49,6 @@ export default function Chatroom() {
     setImage(e.target.files[0]);
   };
 
-  //when fetching new messages save sender user info
-  //emit data needs to match what is sending info
-
   /*
    * Submitting data will happen in 3 steps
    * 1) If there is image, first upload to firebase to retrieve URL.
@@ -85,17 +57,12 @@ export default function Chatroom() {
    *
    * */
   const handleSubmit = async () => {
-    //pass user information
     socket.emit("send_message", {
       key: newMessage.length,
       comment: newMessage,
       sender: userId,
-      // chatImg: null,
-      // profilePic:
-      //   "https://firebasestorage.googleapis.com/v0/b/project3-8f0e6.appspot.com/o/profile-img%2FIFFY?alt=media&token=45be3d67-b24e-4c22-8600-48d9139487db",
-      // timestamp: 1,
+      chatImg: [],
     });
-
     if (image !== "") {
       const storageRefInstance = storageRef(
         storage,
@@ -135,31 +102,6 @@ export default function Chatroom() {
     );
   }, [socket, allMessages]);
 
-  //Conditionally render chat bubbles based on if user is sender or not
-  // const renderChats = (items) => {
-  //   return items.map((item) =>
-  //     item.sender == userId ? (
-  //       <UserChatBubble
-  //         key={item.id}
-  //         comment={item.comment}
-  //         // chatImg={item.chat_images.length > 0 ? item.chat_images[0].url : null}
-  //         // senderId={item.sender}
-  //         // profilePic={item.user.profilePicture}
-  //         // timestamp={item.createdAt}
-  //       />
-  //     ) : (
-  //       <OtherChatBubble
-  //         key={item.id}
-  //         comment={item.comment}
-  //         // chatImg={item.chat_images.length > 0 ? item.chat_images[0].url : null}
-  //         // senderId={item.sender}
-  //         // profilePic={item.user.profilePicture}
-  //         // timestamp={item.createdAt}
-  //       />
-  //     )
-  //   );
-  // };
-
   return (
     <>
       <div className="h-screen mx-4 mt-2">
@@ -188,21 +130,21 @@ export default function Chatroom() {
         </div>
         <div className="h-10"></div>
         <hr />
-
-        {/* {allMessages && renderChats(allMessages)} */}
-
-        {allMessages.map((item) => (
-          <ChatBubble
-            key={item.id}
-            comment={item.comment}
-            senderId={item.sender}
-            // chatImg={
-            //   item.chat_images.length > 0 ? item.chat_images[0].url : null
-            // }
-            // profilePic={item.user.profilePicture}
-            // timestamp={item.createdAt}
-          />
-        ))}
+        <div className="pb-20">
+          {allMessages &&
+            allMessages.map((item) => (
+              <ChatBubble
+                key={item.id}
+                comment={item.comment}
+                chatImg={
+                  item.chat_images.length > 0 ? item.chat_images[0].url : null
+                }
+                senderId={item.sender}
+                profilePic={item.user.profilePicture}
+                timestamp={item.createdAt}
+              />
+            ))}
+        </div>
 
         <form className="fixed right-0 left-0 bottom-0 pb-2 w-full flex justify-center">
           <div className=" rounded-full h-12 flex flex-row bg-slate-200 mt-10 items-center">
