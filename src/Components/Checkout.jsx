@@ -30,14 +30,26 @@ function Checkout() {
     setListingData(listingData.data);
     setLoading(false);
   };
-/**
- * should check if buyer address input field is the same as the registered buyer address. 
- * if not, put request to edit buyer address. 
- * then, send to backend order row with info on listing, sellerId,buyerId(many2many?), seller sent confirmation, buyer receipt confirmation. 
- * 
- */
+  /**
+   * should check if buyer address input field is the same as the registered buyer address.
+   * if not, put request to edit buyer address.
+   * then, send to backend order row with info on listing, sellerId,buyerId(many2many?), seller sent confirmation, buyer receipt confirmation.
+   *
+   */
   const handleSubmit = async () => {
-
+    const updateProfile =
+      currentUser.address === deliveryAddress
+        ? null
+        : await axios.put(`${BACKEND_URL}/users/address/${currentUser.id}`, {
+            address: deliveryAddress,
+          });
+    console.log(updateProfile?.data);
+    const submitOrder = await axios.post(`${BACKEND_URL}/orders`, {
+      listingId,
+      buyerId: currentUser.id,
+    });
+    console.log(submitOrder.data);
+    navigate("/order");
   };
 
   return (
@@ -100,7 +112,7 @@ function Checkout() {
         </div>
         <div className="flex flex-row items-center justify-center mt-4 mb-4">
           <button
-            onClick={() => navigate("/order")}
+            onClick={() => handleSubmit()}
             className="btn w-full bg-[#6C22A6] text-white text-lg relative bottom-0 hover:opacity-100 transition ease-in mb-4 "
           >
             Place Order
