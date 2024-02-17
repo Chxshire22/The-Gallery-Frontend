@@ -54,7 +54,7 @@ function Checkout() {
 
   return (
     <>
-      <div className="h-screen mx-4 mt-4">
+      <div className="h-screen mx-4 mt-4 lg:w-[40rem] lg:mx-auto">
         <header className="mx-4 mt-2 mb-4">
           <div className="h-10 w-full flex flex-row items-center">
             <div
