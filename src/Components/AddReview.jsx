@@ -31,7 +31,7 @@ export default function AddReview() {
     });
 
     console.log(response.data);
-    navigate(`/listing/${orderData.listingId}`);
+    navigate(-1);
   };
 
   return (
