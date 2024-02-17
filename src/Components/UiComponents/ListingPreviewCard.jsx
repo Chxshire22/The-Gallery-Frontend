@@ -45,7 +45,7 @@ export default function ListingPreviewCard(props) {
 
   return (
     <>
-      <div className="w-40 md:w-60 hover:scale-110 transition-transform ease-in flex flex-col listing-card-preview box-border border-2 border-black shadow-[4px_4px_0px_0px_#1a202c] rounded-lg bg-slate-50">
+      <div className="w-40 md:w-60 lg:hover:scale-110 transition-transform ease-in flex flex-col listing-card-preview box-border border-2 border-black shadow-[4px_4px_0px_0px_#1a202c] rounded-lg bg-slate-50">
         <div className="h-8  flex flex-row rounded-t-lg items-center">
           <img
             onClick={() => navigate(`/profile/${seller}`)}

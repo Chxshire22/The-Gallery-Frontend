@@ -25,7 +25,7 @@ export default function Navbar() {
 
   return (
     <div className="w-full flex justify-center">
-      <ul className=" fixed bottom-0 lg:top-0 lg:bottom-auto flex justify-around lg:justify-end lg:gap-10 w-full menu menu-horizontal bg-stone-950 rounded-t-box lg:rounded-t-none">
+      <ul className=" fixed bottom-0 lg:top-0 lg:bottom-auto flex justify-around lg:justify-end lg:gap-10 w-full menu menu-horizontal bg-stone-950 rounded-t-box lg:rounded-b-box lg:rounded-t-none">
         {/* HOME */}
         <li
           className="cursor-pointer lg:mr-auto"
@@ -161,6 +161,9 @@ export default function Navbar() {
                       <a onClick={() => navigate("/edit-profile")}>
                         Edit Profile
                       </a>
+                    </li>
+                    <li>
+                      <a onClick={() => navigate("/orders")}>My Orders</a>
                     </li>
                     <li>
                       <a

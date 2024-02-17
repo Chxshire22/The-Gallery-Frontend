@@ -1,12 +1,44 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MediumListingPreviewCard from "./UiComponents/MediumListingPreviewCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useCurrentUserContext } from "./lib/context/currentUserContext";
+import axios from "axios";
+import { BACKEND_URL } from "./lib/constants";
 
-function Checkout(props) {
+function Checkout() {
+  const [listingData, setListingData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+
+  const { listingId } = useParams();
+  const { currentUser } = useCurrentUserContext();
+
   const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    getListing();
   }, []);
+
+  useEffect(() => {
+    console.log(currentUser);
+    console.log(listingData);
+    setDeliveryAddress(currentUser.address);
+  }, [listingData, currentUser]);
+
+  const getListing = async () => {
+    const listingData = await axios.get(`${BACKEND_URL}/listings/${listingId}`);
+    setListingData(listingData.data);
+    setLoading(false);
+  };
+/**
+ * should check if buyer address input field is the same as the registered buyer address. 
+ * if not, put request to edit buyer address. 
+ * then, send to backend order row with info on listing, sellerId,buyerId(many2many?), seller sent confirmation, buyer receipt confirmation. 
+ * 
+ */
+  const handleSubmit = async () => {
+
+  };
 
   return (
     <>
@@ -39,10 +71,32 @@ function Checkout(props) {
         </header>
         <h2 className="underline font-bold">Delivery Address</h2>
         <p className="font-medium text-sm">
-          1234 Elm Street, #14-12, Singapore 470123
+          <input
+            type="text"
+            placeholder="Address"
+            className="w-full mt-4 p-3 bg-slate-300/30 rounded outline-[#83C0C1] active:outline-[#83C0C1]"
+            onChange={(e) => {
+              setDeliveryAddress(e.target.value);
+            }}
+            value={deliveryAddress}
+          />
         </p>
         <div className="my-4">
-          <MediumListingPreviewCard />
+          {loading ? (
+            <div className="h-full w-full flex justify-center items-center ">
+              <span className="loading loading-spinner text-[#6962AD]/60 loading-lg"></span>
+            </div>
+          ) : (
+            <MediumListingPreviewCard
+              listingTitle={listingData.title}
+              listingId={listingId}
+              sellerUsername={listingData.seller.username}
+              sellerPfp={listingData.seller.profilePicture}
+              listingImage={listingData.listing_images[0].url}
+              listingDescription={listingData.description}
+              listingPrice={listingData.price}
+            />
+          )}
         </div>
         <div className="flex flex-row items-center justify-center mt-4 mb-4">
           <button
