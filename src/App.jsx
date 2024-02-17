@@ -11,6 +11,7 @@ import Listing from "./Components/Listing";
 import Likes from "./Components/Likes";
 import AddListingPreview from "./Components/AddListingPreview";
 import Checkout from "./Components/Checkout";
+import Order from "./Components/Order";
 import CategoryFilter from "./Components/CategoryFilter";
 import { CheckCurrentUser } from "./Components/lib/context/currentUserContext";
 import { useState } from "react";
@@ -102,6 +103,10 @@ export default function App() {
     {
       path: "/checkout",
       element: <Checkout />,
+    },
+    {
+      path: "/order",
+      element: <Order />,
     },
     {
       path: "/prototyping",

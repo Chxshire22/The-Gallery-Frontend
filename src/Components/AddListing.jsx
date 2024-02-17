@@ -215,7 +215,8 @@ export default function AddListing(props) {
             onClick={() => navigate("/preview-listing")}
             className="btn w-full bg-[#83C0C1] text-white text-lg relative bottom-0 hover:opacity-100 transition ease-in mb-4 lg:w-[40rem]"
             disabled={
-              selectedImage.length == 0 ||
+              // selectedImage.length == 0 ||
+              selectedImage == null ||
               listingTitleValue.length == 0 ||
               priceValue == 0
                 ? true
