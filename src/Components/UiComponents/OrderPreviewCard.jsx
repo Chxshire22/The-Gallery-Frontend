@@ -5,8 +5,10 @@ import { BACKEND_URL } from "../lib/constants";
 
 export default function OrderPreviewCard(props) {
   const navigate = useNavigate();
+  const [sentStatus, setSentStatus] = useState(false);
+  const [receivedStatus, setReceivedStatus] = useState(false);
 
-  const {
+  let {
     saleCard,
     listingTitle,
     listingId,
@@ -24,17 +26,26 @@ export default function OrderPreviewCard(props) {
     orderId,
   } = props;
 
-  const orderSent = async () => {
+  useEffect(() => {
+    setSentStatus(sellerSent);
+    setReceivedStatus(buyerReceived)
+  }, []);
+
+  const handleSent = async () => {
     const sent = await axios.put(
       `${BACKEND_URL}/orders/seller-sent/${true}/${orderId}`
     );
     console.log(sent.data);
+    setSentStatus(true);
   };
+
   const orderReceived = async () => {
     const received = await axios.put(
       `${BACKEND_URL}/orders/buyer-received/${true}/${orderId}`
     );
     console.log(received.data);
+    setReceivedStatus(true);
+    navigate(`/review/${orderId}`);
   };
 
   useEffect(() => {
@@ -66,49 +77,42 @@ export default function OrderPreviewCard(props) {
                   : "No address"
                 : trackingUrl}
             </p>
+            {saleCard && sentStatus ? (
+              <button className=" bg-[#6C22A6]/60 text-white outline-none border-none opacity-80 hover:opacity-100 transition ease-in py-1 px-2 mt-2 rounded-full">
+                Item sent!
+              </button>
+            ) : null}
 
-              <div className="dropdown dropdown-top">
-                {saleCard ? (
-                  <button className=" bg-[#6C22A6]/60 text-white outline-none border-none opacity-80 hover:opacity-100 transition ease-in py-1 px-2 mt-2 rounded-full">
-                    Sent Status
-                  </button>
-                ) : sellerSent ? (
-                  <button className=" bg-[#6C22A6]/60 text-white outline-none border-none opacity-80 hover:opacity-100 transition ease-in py-1 px-2 mt-2 rounded-full">
-                    Received?
-                  </button>
-                ) : (
-                  <p className="font-medium text-sm">
-                    Waiting for seller to post
-                  </p>
-                )}
+            {saleCard && !sentStatus ? (
+              <button
+                onClick={() => handleSent()}
+                className=" bg-[#6C22A6]/60 text-white outline-none border-none opacity-80 hover:opacity-100 transition ease-in py-1 px-2 mt-2 rounded-full"
+              >
+                Mark as sent
+              </button>
+            ) : null}
 
-                <ul className="p-2 shadow menu dropdown-content bg-base-100 rounded-box">
-                  {saleCard ? (
-                    sellerSent ? null : (
-                      <li
-                        onClick={() => {
-                          console.log("pressed");
-                          orderSent();
-                        }}
-                      >
-                        <a>Sent</a>
-                      </li>
-                    )
-                  ) : sellerSent ? (
-                    <li>
-                      <a
-                        onClick={() => {
-                          orderReceived();
-                          console.log("pressed");
-                        }}
-                      >
-                        Received
-                      </a>
-                    </li>
-                  ) : null}
-                </ul>
-              </div>
-          
+            {!saleCard && !sentStatus ? (
+              <button className=" bg-[#6C22A6]/60 text-white outline-none border-none opacity-80 hover:opacity-100 transition ease-in py-1 px-2 mt-2 rounded-full">
+                Pending postage{" "}
+              </button>
+            ) : null}
+            {!saleCard && sentStatus && !receivedStatus ? (
+              <button
+                onClick={() => orderReceived()}
+                className=" bg-[#6C22A6]/60 text-white outline-none border-none opacity-80 hover:opacity-100 transition ease-in py-1 px-2 mt-2 rounded-full"
+              >
+                Mark as received{" "}
+              </button>
+            ) : null}
+            {!saleCard && receivedStatus ? (
+              <button
+                disabled
+                className=" bg-[#6C22A6]/20 text-white outline-none border-none opacity-80 hover:opacity-100 transition ease-in py-1 px-2 mt-2 rounded-full"
+              >
+                Item received
+              </button>
+            ) : null}
           </div>
         </div>
         <div className="rounded-b-lg flex flex-row items-center h-full">

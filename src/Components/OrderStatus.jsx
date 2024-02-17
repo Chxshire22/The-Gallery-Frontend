@@ -97,6 +97,7 @@ function OrderStatus() {
                   buyerUsername={each.user.username}
                   orderId={each.id}
                   sellerSent={each.sellerSent}
+                  buyerReceived={each.buyerReceived}
                 />
               ))
             : null}
@@ -123,6 +124,7 @@ function OrderStatus() {
                   listingPrice={each.listing.price}
                   orderId={each.id}
                   sellerSent={each.sellerSent}
+                  buyerReceived={each.buyerReceived}
                 />
               ))
             : null}

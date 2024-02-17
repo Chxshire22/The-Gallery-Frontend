@@ -54,7 +54,7 @@ function Checkout() {
 
   return (
     <>
-      <div className="h-screen mx-4 mt-4 lg:w-[40rem] lg:mx-auto">
+      <div className="h-screen mx-4 mt-4 lg:px-[30rem]">
         <header className="mx-4 mt-2 mb-4">
           <div className="h-10 w-full flex flex-row items-center">
             <div
@@ -81,43 +81,45 @@ function Checkout() {
             Checkout
           </h2>
         </header>
-        <h2 className="underline font-bold">Delivery Address</h2>
-        <p className="font-medium text-sm">
-          <input
-            type="text"
-            placeholder="Address"
-            className="w-full mt-4 p-3 bg-slate-300/30 rounded outline-[#83C0C1] active:outline-[#83C0C1]"
-            onChange={(e) => {
-              setDeliveryAddress(e.target.value);
-            }}
-            value={deliveryAddress}
-          />
-        </p>
-        <div className="my-4">
-          {loading ? (
-            <div className="h-full w-full flex justify-center items-center ">
-              <span className="loading loading-spinner text-[#6962AD]/60 loading-lg"></span>
-            </div>
-          ) : (
-            <MediumListingPreviewCard
-              listingTitle={listingData.title}
-              listingId={listingId}
-              sellerUsername={listingData.seller.username}
-              sellerPfp={listingData.seller.profilePicture}
-              listingImage={listingData.listing_images[0].url}
-              listingDescription={listingData.description}
-              listingPrice={listingData.price}
+        <main className=" lg:w-[40rem] lg:mx-auto">
+          <h2 className="underline font-bold ">Delivery Address</h2>
+          <p className="font-medium text-sm">
+            <input
+              type="text"
+              placeholder="Address"
+              className="w-full mt-4 p-3 bg-slate-300/30 rounded outline-[#83C0C1] active:outline-[#83C0C1]"
+              onChange={(e) => {
+                setDeliveryAddress(e.target.value);
+              }}
+              value={deliveryAddress}
             />
-          )}
-        </div>
-        <div className="flex flex-row items-center justify-center mt-4 mb-4">
-          <button
-            onClick={() => handleSubmit()}
-            className="btn w-full bg-[#6C22A6] text-white text-lg relative bottom-0 hover:opacity-100 transition ease-in mb-4 "
-          >
-            Place Order
-          </button>
-        </div>
+          </p>
+          <div className="my-4 flex justify-center">
+            {loading ? (
+              <div className="h-full w-full flex justify-center items-center ">
+                <span className="loading loading-spinner text-[#6962AD]/60 loading-lg"></span>
+              </div>
+            ) : (
+              <MediumListingPreviewCard
+                listingTitle={listingData.title}
+                listingId={listingId}
+                sellerUsername={listingData.seller.username}
+                sellerPfp={listingData.seller.profilePicture}
+                listingImage={listingData.listing_images[0].url}
+                listingDescription={listingData.description}
+                listingPrice={listingData.price}
+              />
+            )}
+          </div>
+          <div className="flex flex-row items-center justify-center mt-4 mb-4">
+            <button
+              onClick={() => handleSubmit()}
+              className="btn w-full bg-[#6C22A6] text-white text-lg relative bottom-0 hover:opacity-100 transition ease-in mb-4 "
+            >
+              Place Order
+            </button>
+          </div>
+        </main>
       </div>{" "}
     </>
   );

@@ -67,7 +67,7 @@ export default function Profile() {
               @{userProfile.username}
             </p>
             <p className="text-xs">{userProfile.bio}</p>
-            <div className="flex items-center flex-row gap-1">
+            {/* <div className="flex items-center flex-row gap-1">
               <p className="text-xs font-bold text-black/50">Chat</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +82,7 @@ export default function Profile() {
                   clipRule="evenodd"
                 />
               </svg>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -105,7 +105,7 @@ export default function Profile() {
         </ul>
 
         {/* GET ALL LISTINGS, GET ALL REVIEWS TO EACH LISTING AND MAP HERE MAYBE DO PAGINATION?  */}
-        <h2 className="font-bold text-xl my-4">Reviews</h2>
+        {/* <h2 className="font-bold text-xl my-4">Reviews</h2> */}
         <div className="pt-2 pb-16"></div>
         <Navbar />
       </main>
