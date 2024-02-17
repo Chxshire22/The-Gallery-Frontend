@@ -77,6 +77,7 @@ export default function EditProfile() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      console.log(usernameValue);
       const checkUsernameAvailabity = currentUser
         ? await axios.get(
             `${BACKEND_URL}/users/username/${currentUser.id}/${usernameValue}`

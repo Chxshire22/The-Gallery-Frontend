@@ -2,12 +2,11 @@ import { useNavigate } from "react-router-dom";
 import MediumListingPreviewCard from "./UiComponents/MediumListingPreviewCard";
 import { useEffect } from "react";
 
-
 function Checkout(props) {
   const navigate = useNavigate();
-    useEffect(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    }, []);
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, []);
 
   return (
     <>
@@ -47,7 +46,7 @@ function Checkout(props) {
         </div>
         <div className="flex flex-row items-center justify-center mt-4 mb-4">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/order")}
             className="btn w-full bg-[#6C22A6] text-white text-lg relative bottom-0 hover:opacity-100 transition ease-in mb-4 "
           >
             Place Order
