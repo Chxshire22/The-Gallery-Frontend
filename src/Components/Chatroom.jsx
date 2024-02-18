@@ -12,50 +12,28 @@ import {
   ref as storageRef,
   getDownloadURL,
 } from "firebase/storage";
-import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Chatroom() {
   const [allMessages, setAllMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [userId, setUserId] = useState();
   const [image, setImage] = useState("");
-  // const [accessToken, setAccessToken] = useState("");
+  const [username, setUsername] = useState("");
+  const [loaded, setLoaded] = useState(false);
   const { chatroomId } = useParams();
-
-  //Auth redirect if user is not authenticated
-  // const { loginWithRedirect, isAuthenticated, user, getAccessTokenSilently } =
-  //   useAuth0();
-
-  // const checkUser = async () => {
-  //   if (isAuthenticated) {
-  //     let token = await getAccessTokenSilently();
-  //     console.log(`token`, token);
-  //     setAccessToken(token);
-  //     setEmail(user.email);
-  //     console.log(`email`, user.email);
-  //   } else {
-  //     loginWithRedirect();
-  //   }
-  // };
-  // useEffect(() => {
-  //   //if user not authenticated, prompt them to authenticate
-  //   console.log("log", isAuthenticated);
-  //   checkUser();
-  // }, []);
+  console.log(`chat`, chatroomId);
 
   const { currentUser } = useCurrentUserContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(currentUser.id);
+    console.log(currentUser);
     setUserId(currentUser.id);
+    setUsername(currentUser.username);
   }, [currentUser]);
 
   //Set-up for socket.io
-  const socket = io.connect(BACKEND_URL, {
-    rememberTransport: false,
-    transports: ["WebSocket", "Flash Socket", "AJAX long-polling"],
-  });
+  const socket = io.connect(BACKEND_URL);
 
   //Retrieves existing messages for specific chatroom
   const getAllMessages = async () => {
@@ -67,11 +45,16 @@ export default function Chatroom() {
 
   useEffect(() => {
     getAllMessages();
-  }, []);
+  }, [loaded]);
 
   const handleImageChange = (e) => {
     console.log(e.target.files[0]);
     setImage(e.target.files[0]);
+  };
+
+  const convertISOToString = (isoDate = new Date().toISOString()) => {
+    const dateObject = new Date(isoDate);
+    return dateObject.toLocaleString("en-sg"); // You can use other formatting options as needed
   };
 
   /*
@@ -81,7 +64,14 @@ export default function Chatroom() {
    * 3) POST image to chat_images with the URL and ID
    *
    * */
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    socket.emit("send_message", {
+      id: newMessage.length,
+      comment: newMessage,
+      sender: userId,
+      // chatImg: [],
+    });
     if (image !== "") {
       const storageRefInstance = storageRef(
         storage,
@@ -113,16 +103,13 @@ export default function Chatroom() {
     }
 
     setNewMessage("");
-
-    socket.emit("send_message", { message: "hello" });
   };
 
   useEffect(() => {
-    socket.on("receive_message", (data) => {
-      setAllMessages([]);
-      getAllMessages();
-    });
-  }, [socket]);
+    socket.on("receive_message", (data) =>
+      setAllMessages([...allMessages, data])
+    );
+  }, [socket, allMessages]);
 
   return (
     <>
@@ -152,20 +139,22 @@ export default function Chatroom() {
         </div>
         <div className="h-10"></div>
         <hr />
-
-        {allMessages &&
-          allMessages.map((item) => (
-            <ChatBubble
-              key={item.id}
-              comment={item.comment}
-              chatImg={
-                item.chat_images.length > 0 ? item.chat_images[0].url : null
-              }
-              senderId={item.sender}
-              profilePic={item.user.profilePicture}
-              timestamp={item.createdAt}
-            />
-          ))}
+        <div className="pb-20">
+          {allMessages &&
+            allMessages.map((item) => (
+              <ChatBubble
+                key={item.id}
+                comment={item.comment}
+                username={item.sender == userId ? username : item.user.username}
+                // chatImg={
+                //   item.chat_images.length > 0 ? item.chat_images[0].url : null
+                // }
+                senderId={item.sender}
+                // profilePic={item.user.profilePicture}
+                timestamp={item.createdAt}
+              />
+            ))}
+        </div>
 
         <form className="fixed right-0 left-0 bottom-0 pb-2 w-full flex justify-center">
           <div className=" rounded-full h-12 flex flex-row bg-slate-200 mt-10 items-center">
@@ -198,6 +187,7 @@ export default function Chatroom() {
               type="text"
               autoFocus
               placeholder="Send message"
+              value={newMessage}
               onChange={(e) => {
                 setNewMessage(e.target.value);
               }}
