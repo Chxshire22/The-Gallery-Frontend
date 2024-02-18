@@ -2,39 +2,43 @@ import { useState, useEffect } from "react";
 import { BACKEND_URL } from "./lib/constants";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useCurrentUserContext } from "./lib/context/currentUserContext";
+import { useParams } from "react-router-dom";
 
-export default function AddReview({ userId, listingId }) {
+export default function AddReview() {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(5);
+  const [orderData, setOrderData] = useState({});
 
-  // const { currentUser } = useCurrentUserContext();
-  // const { listingId } = useParams();
+  const { orderId } = useParams();
 
-  // useEffect(() => {
-  //   console.log(currentUser.id);
-  //   setUserId(currentUser.id);
-  // }, [currentUser]);
+  const navigate = useNavigate();
+
+  const getOrderData = async () => {
+    const orderData = await axios.get(`${BACKEND_URL}/orders/${orderId}`);
+    console.log(orderData.data);
+    setOrderData(orderData.data);
+  };
+  useEffect(() => {
+    getOrderData();
+  }, []);
 
   const handleSubmit = async () => {
     let response = await axios.post(`${BACKEND_URL}/reviews/`, {
-      listingId: listingId,
-      userId: userId,
+      listingId: orderData.listingId,
+      userId: orderData.buyerId,
       comment: review,
       rating: rating,
     });
 
-    setRating();
-    setReview("");
-
-    window.location.reload();
+    console.log(response.data);
+    navigate(-1);
   };
 
   return (
     <>
-      <div>
+      <div className="h-screen mx-4 mt-4 lg:w-[80rem] lg:mx-auto">
         <h3 className="font-bold text-xl my-4">Share your experience</h3>
-        <div className="rating">
+        <div className="rating mt-4">
           <input
             type="radio"
             name="rating-2"
@@ -55,7 +59,7 @@ export default function AddReview({ userId, listingId }) {
             type="radio"
             name="rating-2"
             className="mask mask-star-2 bg-[#6962AD]"
-            onClick={(e) => {
+            onClick={() => {
               setRating(3);
             }}
           />
@@ -63,7 +67,7 @@ export default function AddReview({ userId, listingId }) {
             type="radio"
             name="rating-2"
             className="mask mask-star-2 bg-[#6962AD]"
-            onClick={(e) => {
+            onClick={() => {
               setRating(4);
             }}
           />
@@ -71,7 +75,7 @@ export default function AddReview({ userId, listingId }) {
             type="radio"
             name="rating-2"
             className="mask mask-star-2 bg-[#6962AD]"
-            onClick={(e) => {
+            onClick={() => {
               setRating(5);
             }}
           />
@@ -90,9 +94,8 @@ export default function AddReview({ userId, listingId }) {
           maxLength={140}
         ></textarea>
         <button
-          type="submit"
           onClick={handleSubmit}
-          className="btn w-full bg-[#83C0C1] text-white text-lg relative bottom-0 hover:opacity-100 transition ease-in mb-4 "
+          className="btn w-full bg-[#83C0C1] text-white text-lg relative bottom-0 hover:opacity-100 transition ease-in mb-4 mt-4 "
         >
           Submit
         </button>

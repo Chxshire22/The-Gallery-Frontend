@@ -16,7 +16,6 @@ export function CheckCurrentUser({ children }) {
         const userData = res.data;
         setCurrentUser(userData);
         axios.get(`${BACKEND_URL}/likes/list/${res.data.id}`).then((res) => {
-          console.log(res.data);
           setCurrentUserLikes(
             res.data
               .map((each) => each.listing.id)

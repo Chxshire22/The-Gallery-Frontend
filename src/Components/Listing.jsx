@@ -226,7 +226,7 @@ export default function Listing() {
               )}
             </div>
             <button
-              onClick={() => navigate("/checkout")}
+              onClick={() => navigate(`/checkout/${listingId}`)}
               className="btn w-28 bg-[#6C22A6] text-white outline-none border-none fixed bottom-8 right-5 z-19 opacity-80 hover:opacity-100 transition ease-in"
             >
               {" "}

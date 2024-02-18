@@ -13,9 +13,11 @@ import AddListingPreview from "./Components/AddListingPreview";
 import Checkout from "./Components/Checkout";
 import Order from "./Components/Order";
 import CategoryFilter from "./Components/CategoryFilter";
+import OrderStatus from "./Components/OrderStatus";
 import { CheckCurrentUser } from "./Components/lib/context/currentUserContext";
 import { useState } from "react";
 import "./App.css";
+import AddReview from "./Components/AddReview";
 
 export default function App() {
   //raised state for listing creation
@@ -102,11 +104,29 @@ export default function App() {
     },
     {
       path: "/checkout",
-      element: <Checkout />,
+      children: [
+        {
+          path: ":listingId",
+          element: <Checkout />,
+        },
+      ],
+    },
+    {
+      path: "/review",
+      children: [
+        {
+          path: ":orderId",
+          element: <AddReview />,
+        },
+      ],
     },
     {
       path: "/order",
       element: <Order />,
+    },
+    {
+      path: "/orders",
+      element: <OrderStatus />,
     },
     {
       path: "/prototyping",

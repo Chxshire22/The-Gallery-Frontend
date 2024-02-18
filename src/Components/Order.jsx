@@ -7,6 +7,8 @@ const Order = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
+
+
   return (
     <>
       <div className="h-screen mx-4 mt-4 flex flex-col items-center justify-center">
@@ -15,8 +17,9 @@ const Order = () => {
         <p className="text-xl mb-4">Thank you for your purchase!</p>
         <button
           onClick={() => navigate("/")}
-          className="btn bg-[#6C22A6] text-white text-lg hover:opacity-100 transition ease-in mb-4 w-1/3"
+          className="btn w-28 bg-[#6C22A6] text-white opacity-80 hover:opacity-100 transition ease-in"
         >
+          {" "}
           Continue Shopping
         </button>
       </div>
