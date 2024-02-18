@@ -20,7 +20,6 @@ export default function Listing() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-    console.log(listingId);
     getListingData();
   }, []);
 
@@ -41,8 +40,7 @@ export default function Listing() {
       `${BACKEND_URL}/likes/count/${listingId}`
     );
 
-    console.log(listingData.data);
-    console.log(`likes count ${likesCount.data}`);
+
     setListingData(listingData.data);
     setLikesCount(likesCount.data);
     setReviews(listingData.data.reviews);
@@ -52,7 +50,6 @@ export default function Listing() {
 
   // Creates request to find/ create chatroom
   const handleClick = async () => {
-    console.log(listingId);
 
     let response = await axios.post(`${BACKEND_URL}/chat/chatroom`, {
       listingId: listingId,
@@ -60,7 +57,6 @@ export default function Listing() {
     });
 
     const chatroomId = response.data.id;
-    console.log(chatroomId);
 
     navigate(`/chat/${chatroomId}`);
   };
@@ -71,7 +67,6 @@ export default function Listing() {
         listingId,
         userId: currentUser.id,
       });
-      console.log(like.data);
       setLikesCount((prev) => prev + 1);
       setLiked(true);
     } catch (error) {
@@ -84,7 +79,6 @@ export default function Listing() {
       const unlike = await axios.delete(
         `${BACKEND_URL}/likes/delete/${listingId}/${currentUser.id}`
       );
-      console.log(unlike.data);
       setLiked(false);
       setLikesCount((prev) => prev - 1);
     } catch (error) {

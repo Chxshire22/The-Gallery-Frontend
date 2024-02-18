@@ -21,12 +21,10 @@ function OrderStatus() {
   const { currentUser } = useCurrentUserContext();
 
   useEffect(() => {
-    console.log(currentView);
     if (currentUser.id) {
       populatePurchases();
       populateSales();
     }
-    console.log(currentUser);
   }, [currentView, currentUser]);
 
   const populatePurchases = async () => {
@@ -43,14 +41,6 @@ function OrderStatus() {
     setSales(getSales.data);
     setLoading(false);
   };
-
-  useEffect(() => {
-    console.log(purchases);
-  }, [currentView, currentUser, purchases]);
-
-  useEffect(() => {
-    console.log(sales);
-  }, [sales]);
 
   return (
     <>

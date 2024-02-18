@@ -1,5 +1,4 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Prototyping from "./Components/Prototyping";
 import Home from "./Components/Home";
 import Profile from "./Components/Profile";
 import Explore from "./Components/Explore";
@@ -128,10 +127,7 @@ export default function App() {
       path: "/orders",
       element: <OrderStatus />,
     },
-    {
-      path: "/prototyping",
-      element: <Prototyping />,
-    },
+
   ]);
   return (
     <CheckCurrentUser>

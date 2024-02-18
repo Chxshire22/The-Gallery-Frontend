@@ -10,6 +10,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { useAuth0 } from "@auth0/auth0-react";
+import { imageOptimization } from "./lib/utilities";
 
 export default function EditProfile() {
   const [preview, setPreview] = useState(null);
@@ -35,19 +36,44 @@ export default function EditProfile() {
   // PFP PREVIEW
   useEffect(() => {
     if (selectedImage) {
-      console.log("this is running");
       const localUrl = URL.createObjectURL(selectedImage);
-      setPreview(localUrl);
+      // setPreview(optimizedImage);
     }
   }, [selectedImage]);
 
   const handleImageChange = (e) => {
-    console.log(e.target.files[0]);
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedImage(null);
       return;
     }
     setSelectedImage(e.target.files[0]);
+    const optimizedImage = imageOptimization(e.target.files[0]);
+    console.log(optimizedImage);
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+    reader.onload = function (event) {
+      const imgElement = document.createElement("img");
+      imgElement.src = event.target.result;
+      // document.querySelector("#input").src = event.target.result;
+
+      imgElement.onload = function (e) {
+        const canvas = document.createElement("canvas");
+
+        const MAX_WIDTH = 200;
+        const scaleSize = MAX_WIDTH / e.target.width;
+        canvas.width = MAX_WIDTH;
+        canvas.height = e.target.height * scaleSize;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
+
+        const srcEncoded = ctx.canvas.toDataURL(e.target, 0.8);
+        setPreview(srcEncoded);
+      };
+    };
   };
 
   // POPULATE THE FIELDS WITH EXISTING DATA
@@ -61,11 +87,6 @@ export default function EditProfile() {
     setPreview(currentUser?.profilePicture);
   }, [currentUser]);
 
-  useEffect(() => {
-    console.log(selectedImage);
-    console.log("preview", preview);
-  }, [selectedImage, preview]);
-
   /*
   the handleSubmit acts differently if user is a currentUser. it first checks if 
   username is used by any other user, then checks if user has selected an image for upload. 
@@ -77,14 +98,12 @@ export default function EditProfile() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log(usernameValue);
       const checkUsernameAvailabity = currentUser
         ? await axios.get(
             `${BACKEND_URL}/users/username/${currentUser.id}/${usernameValue}`
           )
         : await axios.get(`${BACKEND_URL}/users/username/new/${usernameValue}`);
       if (checkUsernameAvailabity.data) {
-        console.log(checkUsernameAvailabity.data);
         setUsernameNotAvailable(checkUsernameAvailabity.data);
       } else {
         setUsernameNotAvailable(checkUsernameAvailabity.data);
@@ -99,7 +118,6 @@ export default function EditProfile() {
           const imageSrc = selectedImage
             ? await getDownloadURL(storageRefInstance)
             : null;
-          console.log(imageSrc);
           let dataForBackend = {
             email: user.email,
             firstName: firstNameValue,
@@ -120,7 +138,6 @@ export default function EditProfile() {
                 dataForBackend
               )
             : await axios.post(`${BACKEND_URL}/users`, dataForBackend);
-          console.log(dbUpdateUserData.data);
           if (dbUpdateUserData) {
             navigate("/");
             window.location.reload();

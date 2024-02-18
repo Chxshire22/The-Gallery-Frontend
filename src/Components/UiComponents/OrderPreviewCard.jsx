@@ -35,7 +35,6 @@ export default function OrderPreviewCard(props) {
     const sent = await axios.put(
       `${BACKEND_URL}/orders/seller-sent/${true}/${orderId}`
     );
-    console.log(sent.data);
     setSentStatus(true);
   };
 
@@ -43,14 +42,10 @@ export default function OrderPreviewCard(props) {
     const received = await axios.put(
       `${BACKEND_URL}/orders/buyer-received/${true}/${orderId}`
     );
-    console.log(received.data);
     setReceivedStatus(true);
     navigate(`/review/${orderId}`);
   };
 
-  useEffect(() => {
-    console.log(sellerSent);
-  }, []);
 
   return (
     <>

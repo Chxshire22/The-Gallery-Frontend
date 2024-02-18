@@ -20,8 +20,7 @@ function Checkout() {
   }, []);
 
   useEffect(() => {
-    console.log(currentUser);
-    console.log(listingData);
+
     setDeliveryAddress(currentUser.address);
   }, [listingData, currentUser]);
 
@@ -43,12 +42,10 @@ function Checkout() {
         : await axios.put(`${BACKEND_URL}/users/address/${currentUser.id}`, {
             address: deliveryAddress,
           });
-    console.log(updateProfile?.data);
     const submitOrder = await axios.post(`${BACKEND_URL}/orders`, {
       listingId,
       buyerId: currentUser.id,
     });
-    console.log(submitOrder.data);
     navigate("/order");
   };
 
