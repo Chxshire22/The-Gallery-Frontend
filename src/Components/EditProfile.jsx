@@ -5,9 +5,9 @@ import { BACKEND_URL, DEFAULT_PFP } from "./lib/constants";
 import { useCurrentUserContext } from "./lib/context/currentUserContext";
 import { storage, DB_STORAGE_PFP_KEY } from "./lib/firebase";
 import {
-  uploadBytes,
   ref as storageRef,
   getDownloadURL,
+  uploadString,
 } from "firebase/storage";
 import { useAuth0 } from "@auth0/auth0-react";
 import { imageOptimization } from "./lib/utilities";
@@ -33,13 +33,6 @@ export default function EditProfile() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
-  // PFP PREVIEW
-  useEffect(() => {
-    if (selectedImage) {
-      const localUrl = URL.createObjectURL(selectedImage);
-      // setPreview(optimizedImage);
-    }
-  }, [selectedImage]);
 
   const handleImageChange = (e) => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -70,7 +63,7 @@ export default function EditProfile() {
         const ctx = canvas.getContext("2d");
         ctx.drawImage(e.target, 0, 0, canvas.width, canvas.height);
 
-        const srcEncoded = ctx.canvas.toDataURL(e.target, 0.8);
+        const srcEncoded = ctx.canvas.toDataURL(e.target, 0.8); //this doesnt seem to be working ? 
         setPreview(srcEncoded);
       };
     };
@@ -114,7 +107,7 @@ export default function EditProfile() {
           );
 
           if (selectedImage)
-            await uploadBytes(storageRefInstance, selectedImage);
+            await uploadString(storageRefInstance, preview, 'data_url');
           const imageSrc = selectedImage
             ? await getDownloadURL(storageRefInstance)
             : null;
