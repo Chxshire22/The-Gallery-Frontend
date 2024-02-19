@@ -39,7 +39,6 @@ export default function AddListing(props) {
     label: category.name,
   }));
   const handleChange = (value) => {
-    console.log("value:", value);
     setDataForBackend((prevState) => ({
       ...prevState,
       dropdownSelectValue: value,
@@ -76,19 +75,6 @@ export default function AddListing(props) {
     }
   }, [selectedImage]);
 
-  useEffect(() => {
-    console.log(dropdownSelectValue?.value);
-    console.log("price", priceValue);
-    console.log("listing title", listingTitleValue);
-    console.log("description", descriptionValue);
-    console.log("selectedImage", selectedImage);
-  }, [
-    priceValue,
-    listingTitleValue,
-    descriptionValue,
-    dropdownSelectValue,
-    selectedImage,
-  ]);
 
   return (
     <>

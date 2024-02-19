@@ -10,7 +10,6 @@ export default function ListingPreviewCard(props) {
   const [liked, setLiked] = useState(false);
 
   useEffect(() => {
-    console.log(currentUserLikes);
     if (listingId in currentUserLikes) {
       setLiked(true);
     }
@@ -22,7 +21,6 @@ export default function ListingPreviewCard(props) {
         listingId,
         userId: currentUser.id,
       });
-      console.log(like.data);
       setLiked(true);
     } catch (error) {
       console.log(error);
@@ -34,7 +32,6 @@ export default function ListingPreviewCard(props) {
       const unlike = await axios.delete(
         `${BACKEND_URL}/likes/delete/${listingId}/${currentUser.id}`
       );
-      console.log(unlike.data);
       setLiked(false);
     } catch (error) {
       console.log(error);

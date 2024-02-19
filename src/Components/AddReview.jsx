@@ -15,7 +15,6 @@ export default function AddReview() {
 
   const getOrderData = async () => {
     const orderData = await axios.get(`${BACKEND_URL}/orders/${orderId}`);
-    console.log(orderData.data);
     setOrderData(orderData.data);
   };
   useEffect(() => {
@@ -30,7 +29,6 @@ export default function AddReview() {
       rating: rating,
     });
 
-    console.log(response.data);
     navigate(-1);
   };
 

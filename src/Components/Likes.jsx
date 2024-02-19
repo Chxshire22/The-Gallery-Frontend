@@ -22,13 +22,11 @@ export default function Likes() {
     const likedListingArr = likesList.map(
       (likedListing) => likedListing.listing
     );
-    console.log(likedListingArr);
     setLikedListings(likedListingArr);
   };
 
   //just to be clear - using the custom hook useCurrentUserContext() does not query db for user. it just retrieves the state
   useEffect(() => {
-    console.log(currentUser.id);
     if (currentUser.id) {
       getLikesList();
     }

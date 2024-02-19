@@ -22,7 +22,6 @@ export default function LargeListingPreviewCard(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(currentUserLikes);
     if (id in currentUserLikes) {
       setLiked(true);
     }
@@ -34,7 +33,6 @@ export default function LargeListingPreviewCard(props) {
         listingId: id,
         userId: currentUser.id,
       });
-      console.log(like.data);
       setLiked(true);
     } catch (error) {
       console.log(error);
@@ -46,7 +44,6 @@ export default function LargeListingPreviewCard(props) {
       const unlike = await axios.delete(
         `${BACKEND_URL}/likes/delete/${id}/${currentUser.id}`
       );
-      console.log(unlike.data);
       setLiked(false);
     } catch (error) {
       console.log(error);

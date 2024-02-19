@@ -34,8 +34,7 @@ function AddListingPreview(props) {
   }, []);
 
   useEffect(() => {
-    console.log(currentUser);
-    console.log(selectedImage[0].name);
+
     getCategory();
   }, []);
 
@@ -65,7 +64,6 @@ function AddListingPreview(props) {
         sellerId: currentUser.id,
         categoryId: dropdownSelectValue.value,
       });
-      console.log(createListing.data);
       for (let image of selectedImage) {
         const storageRefInstance = storageRef(
           storage,
@@ -77,18 +75,15 @@ function AddListingPreview(props) {
         const imageUrl = await getDownloadURL(storageRefInstance);
         imgUrls.push(imageUrl);
       }
-      console.log(imgUrls);
       //sequelize backend is using bulk create here, so what I'm doing is sending an object that has an array of objects as its only attribute and each element of that array must contain listingId and the url
       const imagesForBackend = imgUrls.map((imgUrl) => ({
         listingId: createListing.data.id,
         url: imgUrl,
       }));
-      console.log(imagesForBackend);
       const sendImagesForBackend = await axios.post(
         `${BACKEND_URL}/listing-images`,
         { listingImages: imagesForBackend }
       );
-      console.log(sendImagesForBackend.data);
       if (sendImagesForBackend.data)
         navigate(`/profile/${currentUser.username}`);
     } catch (err) {

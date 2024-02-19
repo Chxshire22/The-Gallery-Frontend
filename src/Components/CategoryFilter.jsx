@@ -46,13 +46,10 @@ function CategoryFilter() {
   useEffect(() => {
     setLoading(true);
     setError(false);
-    console.log(categoryName);
     getCategoryListings();
   }, [page]);
 
-  useEffect(() => {
-    console.log("filteredListings", filteredListings);
-  }, [filteredListings]);
+
 
   return (
     <>
