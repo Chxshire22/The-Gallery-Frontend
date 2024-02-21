@@ -1,15 +1,30 @@
-# Rocket Academy Coding Bootcamp: Project 3 - Full Stack Application
+# The Gallery
+This is the front-end part of a full stack project called The Gallery. 
 
-https://bc.rocketacademy.co/3-backend/3.p-full-stack-app-express
+Visit the deployment URL here: <https://thegallerysg.netlify.app/>
 
-## Available Scripts
+### Sample login: 
+EMAIL: thegallery@sg.com
+PASSWORD: theGallery2024
 
-This project was created using with Vitejs. In the project directory, please run the following commands:
+## Summary
+The inspiration to build this site came from a lack of proper online websites for Singaporean creatives to truly showcase their work. 
+There is also heavy inspiration from **MySpace of the early 2000s**, where a user can edit their own CSS and HTML on their personal pages. 
+Similarly, when a user signs up, they're given the option to style their profile page to their heart's content using CSS, by just inputting them into the "Styles" field of the "edit-profile" page.
 
-`npm install`
+## Technologies used within the front-end include:
+1) React JS
+2) Tailwind CSS
+3) Auth0
+4) Firebase
+5) axios
+6) React-router-dom
+7) socket.io-client
+8) daisyUI
+9) Vite
 
-`npm run dev`
+## Objective
+The purpose of this project was to test the limits of our understanding in building a full stack, single-page-application with an Express JS backend. You can explore the backend repo [here](https://github.com/Chxshire22/The-Gallery-Backend 'backend repo')
 
-The second command will run the app To see the rendered output please open http://localhost:5173 in the browser of your choice, EG: Google Chrome.
-
-The page will reload when you make changes. You may also see any lint errors in the console.
+## Report issues
+Do let me know by dropping me an email at <indransari@live.com> if you encounter any issues 
