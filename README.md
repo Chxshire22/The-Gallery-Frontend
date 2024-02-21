@@ -4,7 +4,7 @@ This is the front-end part of a full stack project called The Gallery.
 Visit the deployment URL here: <https://thegallerysg.netlify.app/>
 
 ### Sample login: 
-EMAIL: thegallery@sg.com
+EMAIL: thegallery@sg.com\
 PASSWORD: theGallery2024
 
 ## Summary
